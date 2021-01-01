@@ -15,8 +15,8 @@ import java.sql.Statement;
 public class WardRepository {
     @Value(value = "${spring.datasource.driver-class-name}")
     private String driver;
-    @Value(value = "${spring.datasource.url}")
-    private String url;
+    @Value(value = "${spring.datasource.initial_url}")
+    private String initial_url;
     @Value(value = "${spring.datasource.username}")
     private String userName;
     @Value(value = "${spring.datasource.password}")
@@ -31,7 +31,7 @@ public class WardRepository {
     @PostConstruct
     public void init() throws SQLException, ClassNotFoundException {
         Class.forName(driver);
-        Connection conn = DriverManager.getConnection(url, userName, password);
+        Connection conn = DriverManager.getConnection(initial_url, userName, password);
         Statement stat = conn.createStatement();
         stat.executeUpdate(createDatabase);
         stat.execute(useDatabase);

@@ -10,8 +10,8 @@
             ref="loginForm"
             v-loading="loading"
           >
-            <el-form-item label="用户名" prop="username">
-              <el-input v-model="loginForm.username"></el-input>
+            <el-form-item label="id" prop="id">
+              <el-input v-model="loginForm.id"></el-input>
             </el-form-item>
             <el-form-item label="密码" prop="password">
               <el-input
@@ -39,7 +39,7 @@ export default {
   data() {
     return {
       loginForm: {
-        username: "",
+        id: "",
         password: "",
       },
       loading: false,
@@ -49,7 +49,7 @@ export default {
     submitForm(formName) {
       this.loading = true;
       this.$axios.post("/login", {
-        username: this.loginForm.username,
+        id: this.loginForm.id,
         password: this.loginForm.password,
       });
       // .then((resp) => {
