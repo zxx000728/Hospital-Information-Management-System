@@ -27,40 +27,40 @@ axios.defaults.baseURL = "/api";
 axios.defaults.withCredentials = true;
 axios.defaults.headers.post["Content-Type"] = "application/json;charset=UTF-8";
 
-// http request 拦截器
-axios.interceptors.request.use(
-  config => {
-    if (store.state.token) {
-      // 判断是否有token，若存在，每个http header加上token
-      config.headers.Authorization = store.state.token;
-    }
-    return config;
-  },
-  error => {
-    return Promise.reject(error);
-  }
-);
+// // http request 拦截器
+// axios.interceptors.request.use(
+//   config => {
+//     if (store.state.token) {
+//       // 判断是否有token，若存在，每个http header加上token
+//       config.headers.Authorization = store.state.token;
+//     }
+//     return config;
+//   },
+//   error => {
+//     return Promise.reject(error);
+//   }
+// );
 
-// http response 拦截器
-axios.interceptors.response.use(
-  response => {
-    return response;
-  },
-  error => {
-    console.log(error.response);
-    if (error) {
-      // 清除token 如果不是register/login, 跳转至login
-      // store.commit("logout");
-      // router.currentRoute.path !== "/login" &&
-      //   router.currentRoute.path !== "/register" &&
-      //   router.replace({
-      //     path: "/login",
-      //     query: { redirect: router.currentRoute.path }
-      //   });
-    }
-    return Promise.reject(error.response.data);
-  }
-);
+// // http response 拦截器
+// axios.interceptors.response.use(
+//   response => {
+//     return response;
+//   },
+//   error => {
+//     console.log(error.response);
+//     if (error) {
+//       // 清除token 如果不是register/login, 跳转至login
+//       // store.commit("logout");
+//       // router.currentRoute.path !== "/login" &&
+//       //   router.currentRoute.path !== "/register" &&
+//       //   router.replace({
+//       //     path: "/login",
+//       //     query: { redirect: router.currentRoute.path }
+//       //   });
+//     }
+//     return Promise.reject(error.response.data);
+//   }
+// );
 
 Vue.directive("title", {
   inserted: function(el, binding) {
