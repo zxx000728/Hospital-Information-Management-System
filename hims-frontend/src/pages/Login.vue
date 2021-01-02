@@ -54,9 +54,9 @@ export default {
           password: this.loginForm.password,
         })
         .then((resp) => {
-          if (resp.status === 200 && resp.data.hasOwnProperty("token")) {
+          if (resp.status === 200 && resp.data.hasOwnProperty("user")) {
             // Save token
-            // this.$store.commit("login", resp.data);
+            this.$store.commit("login", resp.data);
             this.$message({
               type: "success",
               message: "欢迎登陆！",
