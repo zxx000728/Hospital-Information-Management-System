@@ -10,7 +10,7 @@
             ref="loginForm"
             v-loading="loading"
           >
-            <el-form-item label="id" prop="id">
+            <el-form-item label="用户id" prop="id">
               <el-input v-model="loginForm.id"></el-input>
             </el-form-item>
             <el-form-item label="密码" prop="password">
@@ -48,30 +48,39 @@ export default {
   methods: {
     submitForm(formName) {
       this.loading = true;
-      this.$axios.post("/login", {
-        id: this.loginForm.id,
-        password: this.loginForm.password,
-      });
-      // .then((resp) => {
-      //   if (resp.status === 200 && resp.data.hasOwnProperty("token")) {
-      //     // Save token
-      //     // this.$store.commit("login", resp.data);
-      //     this.$message({
-      //       type: "success",
-      //       message: "Welcome back!",
-      //       center: true,
-      //     });
-      //     this.$router.replace({ path: "/" });
-      //   } else {
-      //     this.errorNotification();
-      //     this.loading = false;
-      //   }
-      // })
-      // .catch((error) => {
-      //   console.log(error);
-      //   this.errorNotification();
-      //   this.loading = false;
-      // });
+      this.$axios
+        .post("/login", {
+          id: this.loginForm.id,
+          password: this.loginForm.password,
+        })
+        .then((resp) => {
+          if (resp.status === 200 && resp.data.hasOwnProperty("token")) {
+            // Save token
+            // this.$store.commit("login", resp.data);
+            this.$message({
+              type: "success",
+              message: "欢迎登陆！",
+              center: true,
+            });
+            this.$router.replace({ path: "/" });
+          } else {
+            this.$message({
+              type: "error",
+              message: "用户id或密码错误，请重试。",
+              center: true,
+            });
+            this.loading = false;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          this.$message({
+            type: "error",
+            message: "服务暂时不可用，请稍后再试。",
+            center: true,
+          });
+          this.loading = false;
+        });
     },
   },
 };
