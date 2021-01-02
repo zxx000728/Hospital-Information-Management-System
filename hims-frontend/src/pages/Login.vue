@@ -6,6 +6,7 @@
         <el-col :span="6">
           <el-form
             :model="loginForm"
+            :rules="rules"
             status-icon
             ref="loginForm"
             v-loading="loading"
@@ -41,6 +42,10 @@ export default {
       loginForm: {
         id: "",
         password: "",
+      },
+      rules: {
+        id: { required: true, message: "请输入用户id", blur: "change" },
+        password: { required: true, message: "请输入密码", blur: "change" },
       },
       loading: false,
     };
