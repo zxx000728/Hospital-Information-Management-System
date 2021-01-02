@@ -1,6 +1,6 @@
 <template>
   <el-container>
-    <el-header>Header</el-header>
+    <el-header><navmenu></navmenu></el-header>
     <el-main>
       <el-row type="flex" justify="center">
         <el-col :span="6">
@@ -30,13 +30,15 @@
         </el-col>
       </el-row>
     </el-main>
-    <el-footer>Footer</el-footer>
   </el-container>
 </template>
 
 <script>
+import navmenu from "../components/Nav.vue";
+
 export default {
   name: "Login",
+  components: { navmenu },
   data() {
     return {
       loginForm: {
