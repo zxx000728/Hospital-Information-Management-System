@@ -70,23 +70,25 @@ export default {
               center: true,
             });
             this.$router.replace({ path: "/" });
-          } else {
-            this.$message({
-              type: "error",
-              message: "用户id或密码错误，请重试。",
-              center: true,
-            });
-            this.loading = false;
           }
         })
         .catch((error) => {
           console.log(error);
-          this.$message({
-            type: "error",
-            message: "服务暂时不可用，请稍后再试。",
-            center: true,
-          });
-          this.loading = false;
+          if (error.message == "Request failed with status code 403") {
+              this.$message({
+                type: "error",
+                message: "用户id或密码错误，请重试。",
+                center: true,
+            });
+            this.loading = false;
+          }else{
+            this.$message({
+              type: "error",
+              message: "服务暂时不可用，请稍后再试。",
+              center: true,
+            });
+            this.loading = false;
+          }
         });
     },
   },
