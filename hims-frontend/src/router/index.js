@@ -1,8 +1,8 @@
 import Vue from "vue";
 import Router from "vue-router";
 
-import HelloWorld from "@/components/HelloWorld";
 import Login from "@/pages/Login";
+import WorkerDataPanel from "@/pages/WorkerDataPanel";
 
 Vue.use(Router);
 
@@ -18,6 +18,11 @@ export default new Router({
       path: "/login",
       name: "Login",
       component: Login
+    },
+    {
+      path: "/workerDataPanel",
+      name: "WorkerDataPanel",
+      component: WorkerDataPanel
     },
     {
       path: "*",
