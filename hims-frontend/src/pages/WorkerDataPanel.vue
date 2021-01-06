@@ -32,7 +32,7 @@ export default {
   components: { navmenu },
   data() {
     return {
-      user:[],
+      user: [],
       tableData: [
         {
           id: "",
@@ -47,8 +47,7 @@ export default {
     };
   },
   created() {
-    this.handleUserData(),
-    this.loadTableData()
+    this.handleUserData(), this.loadTableData();
   },
   methods: {
     handleUserData() {
@@ -56,7 +55,7 @@ export default {
         this.user = JSON.parse(localStorage.getItem("user")).user;
       }
     },
-    loadTableData(){
+    loadTableData() {
       if (this.user) {
         this.tableData[0].id = this.user.id;
         this.tableData[0].name = this.user.name;
@@ -65,20 +64,20 @@ export default {
         this.tableData[0].phone = this.user.phone;
         switch (this.user.u_type) {
           case "doctor":
-            this.tableData[0].u_type = "doctor";
+            this.tableData[0].u_type = "主治医生";
             break;
           case "h_nurse":
-            this.tableData[0].u_type = "head nurse";
+            this.tableData[0].u_type = "护士长";
             break;
           case "w_nurse":
-            this.tableData[0].u_type = "ward nurse";
+            this.tableData[0].u_type = "病房护士";
             break;
           case "e_nurse":
-            this.tableData[0].u_type = "emergency nurse";
+            this.tableData[0].u_type = "急诊护士";
             break;
         }
       }
-    }
+    },
   },
 };
 </script>

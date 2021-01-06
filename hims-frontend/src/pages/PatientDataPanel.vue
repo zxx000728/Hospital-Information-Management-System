@@ -38,9 +38,9 @@ export default {
           id: "",
           name: "",
           age: "",
-          email: "",
           phone: "",
-          u_type: "",
+          address: "",
+          rating: "",
         },
       ],
       loading: false,
@@ -60,20 +60,17 @@ export default {
         this.tableData[0].id = this.user.id;
         this.tableData[0].name = this.user.name;
         this.tableData[0].age = this.user.age;
-        this.tableData[0].email = this.user.email;
         this.tableData[0].phone = this.user.phone;
-        switch (this.user.u_type) {
-          case "doctor":
-            this.tableData[0].u_type = "doctor";
+        this.tableData[0].address = this.user.address;
+        switch (this.user.rating) {
+          case "mild":
+            this.tableData[0].rating = "轻症";
             break;
-          case "h_nurse":
-            this.tableData[0].u_type = "head nurse";
+          case "severe":
+            this.tableData[0].rating = "重症";
             break;
-          case "w_nurse":
-            this.tableData[0].u_type = "ward nurse";
-            break;
-          case "e_nurse":
-            this.tableData[0].u_type = "emergency nurse";
+          case "critical":
+            this.tableData[0].rating = "危重症";
             break;
         }
       }
