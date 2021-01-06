@@ -4,7 +4,7 @@
     <el-main>
       <el-row type="flex" justify="center">
         <el-col type="flex" justify="center">
-          <el-table :data="tableData" align="center">
+          <el-table :data="tableData" align="center" empty-text="暂无数据">
             <el-table-column prop="id" label="ID" width="150">
             </el-table-column>
             <el-table-column prop="name" label="姓名" width="120">
@@ -16,6 +16,28 @@
             <el-table-column prop="address" label="地址" width="300">
             </el-table-column>
             <el-table-column prop="rating" label="病情评级" width="150">
+            </el-table-column>
+            <el-table-column align="right">
+              <template slot="header" slot-scope="scope">
+                <el-button
+                  size="mini"
+                  @click="handleAdd(scope.$index, scope.row)"
+                  >添加</el-button
+                >
+              </template>
+              <template slot-scope="scope">
+                <el-button
+                  size="mini"
+                  @click="handleEdit(scope.$index, scope.row)"
+                  >详情</el-button
+                >
+                <el-button
+                  size="mini"
+                  type="danger"
+                  @click="handleDelete(scope.$index, scope.row)"
+                  >删除</el-button
+                >
+              </template>
             </el-table-column>
           </el-table>
         </el-col>
@@ -33,16 +55,7 @@ export default {
   data() {
     return {
       user: [],
-      tableData: [
-        {
-          id: "",
-          name: "",
-          age: "",
-          phone: "",
-          address: "",
-          rating: "",
-        },
-      ],
+      tableData: [],
       loading: false,
     };
   },
