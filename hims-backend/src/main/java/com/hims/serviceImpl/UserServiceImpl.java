@@ -9,6 +9,7 @@ import com.hims.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,9 +56,9 @@ public class UserServiceImpl implements UserService {
         User headNurse = findHeadNurseByDoctorId(Integer.parseInt(id));
         map.put("headNurse", headNurse); // headNurse
         List<Integer> wards = findWardIdByDoctorId(Integer.parseInt(id));
-        Map<String, Object> wardNurse = new HashMap<>();
+        List<User> wardNurse = new ArrayList<>();
         for (Integer integer : wards) {
-            wardNurse.put("ward" + integer, findWardNurseByWardId(integer));
+            wardNurse.addAll(findWardNurseByWardId(integer));
         }
         map.put("wardNurse", wardNurse); // wardNurse
         return map;
