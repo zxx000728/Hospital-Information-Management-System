@@ -29,12 +29,18 @@ class Initializer {
     private String insertUser;
     @Value(value = "${spring.datasource.createTreatment_area}")
     private String createTreatment_area;
+    @Value(value = "${spring.datasource.insertTreatment_area}")
+    private String insertTreatment_area;
     @Value(value = "${spring.datasource.createWard}")
     private String createWard;
+    @Value(value = "${spring.datasource.insertWard}")
+    private String insertWard;
     @Value(value = "${spring.datasource.createWard_nurse_ward}")
     private String createWard_nurse_ward;
     @Value(value = "${spring.datasource.createBed}")
     private String createBed;
+    @Value(value = "${spring.datasource.insertBed}")
+    private String insertBed;
     @Value(value = "${spring.datasource.createPatient}")
     private String createPatient;
     @Value(value = "${spring.datasource.createNAT_report}")
@@ -52,9 +58,12 @@ class Initializer {
         stat.executeUpdate(createUser);
         stat.executeUpdate(insertUser);
         stat.executeUpdate(createTreatment_area);
+        stat.executeUpdate(insertTreatment_area);
         stat.executeUpdate(createWard);
+        stat.executeUpdate(insertWard);
         stat.executeUpdate(createWard_nurse_ward);
         stat.executeUpdate(createBed);
+        stat.executeUpdate(insertBed);
         stat.executeUpdate(createPatient);
         stat.executeUpdate(createNAT_report);
         stat.executeUpdate(createDaily_report);
