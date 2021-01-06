@@ -60,7 +60,8 @@ export default {
     };
   },
   created() {
-    this.handleUserData(), this.loadTableData();
+    this.handleUserData();
+    this.loadTableData();
   },
   methods: {
     handleUserData() {
@@ -91,6 +92,11 @@ export default {
         }
       }
     },
+    handleAdd() {
+      this.$router.push("/workerInfo");
+    },
+    handleEdit() {},
+    handleDelete() {},
   },
 };
 </script>

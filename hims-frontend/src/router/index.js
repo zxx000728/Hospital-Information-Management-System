@@ -5,6 +5,7 @@ import Login from "@/pages/Login";
 import WorkerDataPanel from "@/pages/WorkerDataPanel";
 import PatientDataPanel from "@/pages/PatientDataPanel";
 import BedDataPanel from "@/pages/BedDataPanel";
+import WorkerInfo from "@/pages/WorkerInfo";
 
 Vue.use(Router);
 
@@ -35,6 +36,11 @@ export default new Router({
       path: "/bedDataPanel",
       name: "BedDataPanel",
       component: BedDataPanel
+    },
+    {
+      path: "/workerInfo",
+      name: "WorkerInfo",
+      component: WorkerInfo
     },
     {
       path: "*",
