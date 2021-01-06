@@ -11,22 +11,22 @@ import java.util.List;
 @Repository
 public class UserRepository {
     @Autowired
-    JdbcTemplate jdbcTemplate;
+    private JdbcTemplate jdbcTemplate;
 
     public void save(User user) {
         String sql = "insert into user(id,name,password,age,email,phone,u_type) values(?,?,?,?,?,?,?)";
         jdbcTemplate.update(sql, user.getId(), user.getName(), user.getPassword(), user.getAge(), user.getEmail(), user.getPhone(), user.getU_type());
     }
 
-    public void delete(String id) {
+    public void delete(int id) {
         String sql = "delete from user where id=?";
         jdbcTemplate.update(sql, id);
     }
 
-    public User find(String id) {
+    public User find(int id) {
         String sql = "select * from user where id=?";
         try {
-            return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(User.class), Integer.parseInt(id));
+            return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(User.class), id);
         } catch (Exception e) {
             return null;
         }
@@ -40,4 +40,14 @@ public class UserRepository {
             return null;
         }
     }
+
+    public List<User> findByType(String type) {
+        String sql = "select * from user where u_type=?";
+        try {
+            return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class), type);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
 }

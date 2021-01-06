@@ -1,15 +1,26 @@
 package com.hims.service;
 
+import com.hims.domain.Patient;
 import com.hims.domain.User;
 
 import java.util.List;
 
 public interface UserService {
-    public void save(User user);
+    void save(User user);
 
-    public void delete(String id);
+    void delete(int id);
 
-    public User find(String id);
+    User find(int id);
 
-    public List<User> findAll();
+    List<User> findAll();
+
+    User findHeadNurseByDoctorId(int id);
+
+    int findTreatmentAreaIdByDoctorId(int id);
+
+    List<Integer> findWardIdByDoctorId(int id);
+
+    List<User> findWardNurseByWardId(int id);
+
+    List<Patient> findPatientByWardId(int id);
 }

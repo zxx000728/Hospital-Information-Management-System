@@ -4,9 +4,7 @@ import com.hims.controller.request.LoginRequest;
 import com.hims.serviceImpl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -22,5 +20,15 @@ public class LoginController {
     @PostMapping("/login")
     public ResponseEntity<Map<String, Object>> login(@RequestBody LoginRequest request) {
         return ResponseEntity.ok(userService.login(request.getId(), request.getPassword()));
+    }
+
+    @GetMapping("/workerDataPanel")
+    public ResponseEntity<?> getWorkerDataPanel(@RequestParam("id") String id,
+                                                 @RequestParam("type") String type) {
+        switch (type) {
+            case "doctor":
+                return ResponseEntity.ok(userService.getDoctorDataPanel(id));
+        }
+        return ResponseEntity.badRequest().body("Bad request");
     }
 }
