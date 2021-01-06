@@ -8,7 +8,7 @@ export default new Vuex.Store({
   },
   mutations: {
     login(state, user) {
-      localStorage.setItem("user", user);
+      localStorage.setItem("user", JSON.stringify(user));
       state.user = user;
     },
     logout(state) {

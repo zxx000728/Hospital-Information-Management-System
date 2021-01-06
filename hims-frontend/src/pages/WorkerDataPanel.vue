@@ -32,20 +32,54 @@ export default {
   components: { navmenu },
   data() {
     return {
+      user:[],
       tableData: [
         {
-          id: "111111",
-          name: "Alice",
-          age: "22",
-          email: "alice@mail.com",
-          phone: "15020000000",
-          u_type: "e_nurse",
+          id: "",
+          name: "",
+          age: "",
+          email: "",
+          phone: "",
+          u_type: "",
         },
       ],
       loading: false,
     };
   },
-  methods: {},
+  created() {
+    this.handleUserData(),
+    this.loadTableData()
+  },
+  methods: {
+    handleUserData() {
+      if (JSON.parse(localStorage.getItem("user")).user) {
+        this.user = JSON.parse(localStorage.getItem("user")).user;
+      }
+    },
+    loadTableData(){
+      if (this.user) {
+        this.tableData[0].id = this.user.id;
+        this.tableData[0].name = this.user.name;
+        this.tableData[0].age = this.user.age;
+        this.tableData[0].email = this.user.email;
+        this.tableData[0].phone = this.user.phone;
+        switch (this.user.u_type) {
+          case "doctor":
+            this.tableData[0].u_type = "doctor";
+            break;
+          case "h_nurse":
+            this.tableData[0].u_type = "head nurse";
+            break;
+          case "w_nurse":
+            this.tableData[0].u_type = "ward nurse";
+            break;
+          case "e_nurse":
+            this.tableData[0].u_type = "emergency nurse";
+            break;
+        }
+      }
+    }
+  },
 };
 </script>
 
