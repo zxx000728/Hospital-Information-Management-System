@@ -3,6 +3,7 @@ import Router from "vue-router";
 
 import Login from "@/pages/Login";
 import WorkerDataPanel from "@/pages/WorkerDataPanel";
+import PatientDataPanel from "@/pages/PatientDataPanel";
 
 Vue.use(Router);
 
@@ -23,6 +24,11 @@ export default new Router({
       path: "/workerDataPanel",
       name: "WorkerDataPanel",
       component: WorkerDataPanel
+    },
+    {
+      path: "/patientDataPanel",
+      name: "PatientDataPanel",
+      component: PatientDataPanel
     },
     {
       path: "*",
