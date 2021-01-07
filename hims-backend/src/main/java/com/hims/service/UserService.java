@@ -29,4 +29,8 @@ public interface UserService {
     List<Patient> findPatientByWardId(int id);
 
     void deleteWardNurseByWNurseId(int id);
+
+//    List<User> findFreeWardNurse();
+//
+//    void insertWardNurse(int w_nurse_id, int w_id);
 }

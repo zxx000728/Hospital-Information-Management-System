@@ -77,6 +77,15 @@ public class UserServiceImpl implements UserService {
         return map;
     }
 
+//    public Map<String, Object> getFreeNurseData(String h_nurse_id) {
+//        Map<String, Object> map = new HashMap<>();
+//        List<Integer> wards = findWardIdByHeadNurseId(Integer.parseInt(h_nurse_id));
+//        map.put("wardId", wards);
+//        List<User> freeNurse = findFreeWardNurse();
+//        map.put("freeNurse", freeNurse);
+//        return map;
+//    }
+
     @Override
     public void save(User user) {
         userRepository.save(user);
@@ -136,6 +145,18 @@ public class UserServiceImpl implements UserService {
             throw new WardNurseDeleteFailureException();
         }
     }
+//
+//    @Override
+//    @Transactional
+//    public List<User> findFreeWardNurse() {
+//        return wardNurseAndWardRepository.findFreeWardNurse();
+//    }
+//
+//    @Override
+//    @Transactional
+//    public void insertWardNurse(int w_nurse_id, int id) {
+//
+//    }
 
     @Override
     public List<User> findWardNurseByWardId(int id) {

@@ -3,6 +3,7 @@ package com.hims.controller;
 import com.hims.controller.request.LoginRequest;
 import com.hims.domain.User;
 import com.hims.exception.WardNurseDeleteFailureException;
+import com.hims.serviceImpl.PatientServiceImpl;
 import com.hims.serviceImpl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,11 +14,15 @@ import java.util.Map;
 
 @RestController
 public class LoginController {
+    @Autowired
     private UserServiceImpl userService;
+    @Autowired
+    private PatientServiceImpl patientService;
 
     @Autowired
-    public LoginController(UserServiceImpl userService) {
+    public LoginController(UserServiceImpl userService, PatientServiceImpl patientService) {
         this.userService = userService;
+        this.patientService = patientService;
     }
 
     @PostMapping("/login")
@@ -52,4 +57,21 @@ public class LoginController {
             return new ResponseEntity<>("No authority!", HttpStatus.UNAUTHORIZED);
         }
     }
+
+    @GetMapping("/patientDataPanel")
+    public ResponseEntity<?> getPatientDataPanel(@RequestParam("id") String id,
+                                                 @RequestParam("type") String type) {
+        switch (type) {
+//            case "doctor":
+//                return ResponseEntity.ok(userService.getDoctorDataPanel(id));
+            case "h_nurse":
+                return ResponseEntity.ok(patientService.getPatientDataPanelByHNurseId(id));
+        }
+        return new ResponseEntity<>("Bad request", HttpStatus.BAD_REQUEST);
+    }
+
+//    @GetMapping("/getFreeNurseData")
+//    public ResponseEntity<Map<String, Object>> getFreeNurseData(@RequestParam("h_nurse_id") String h_nurse_id) {
+//        return ResponseEntity.ok(userService.getFreeNurseData(h_nurse_id));
+//    }
 }

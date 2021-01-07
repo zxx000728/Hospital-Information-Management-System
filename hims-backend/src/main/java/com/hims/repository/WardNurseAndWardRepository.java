@@ -26,4 +26,18 @@ public class WardNurseAndWardRepository {
         String sql = "delete from ward_nurse_ward where w_nurse_id=?";
         jdbcTemplate.update(sql, w_nurse_id);
     }
+
+//    public List<User> findFreeWardNurse() {
+//        String sql = "select distinct user.* from user,ward_nurse_ward where user.u_type='w_nurse' and ward_nurse_ward.w_nurse_id != user.id";
+//        try {
+//            return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class));
+//        } catch (Exception e) {
+//            return null;
+//        }
+//    }
+//
+//    public void insertWardNurse(int w_nurse_id, int w_id) {
+//        String sql = "insert into ward_nurse_ward(w_nurse_id,w_id) values (?,?)";
+//        jdbcTemplate.update(sql, w_nurse_id, w_id);
+//    }
 }
