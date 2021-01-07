@@ -1,6 +1,6 @@
 <template>
   <el-container>
-    <el-header><navmenu></navmenu></el-header>
+    <el-header></el-header>
     <el-main>
       <el-row type="flex" justify="center">
         <el-col :span="6">

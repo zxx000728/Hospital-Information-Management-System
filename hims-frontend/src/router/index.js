@@ -15,8 +15,8 @@ export default new Router({
   routes: [
     {
       path: "/",
-      name: "Login",
-      component: Login
+      name: "Main",
+      component: PatientDataPanel
     },
     {
       path: "/login",
