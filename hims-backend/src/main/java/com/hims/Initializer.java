@@ -19,9 +19,9 @@ class Initializer {
     private String userName;
     @Value(value = "${spring.datasource.password}")
     private String password;
-    @Value(value = "${spring,datasource.createDatabase}")
+    @Value(value = "${spring.datasource.createDatabase}")
     private String createDatabase;
-    @Value(value = "${spring,datasource.useDatabase}")
+    @Value(value = "${spring.datasource.useDatabase}")
     private String useDatabase;
     @Value(value = "${spring.datasource.createUser}")
     private String createUser;
