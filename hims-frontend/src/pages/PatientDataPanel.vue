@@ -17,6 +17,19 @@
             </el-table-column>
             <el-table-column prop="rating" label="病情评级" width="150">
             </el-table-column>
+            <el-table-column
+              prop="state"
+              label="生命状态"
+              width="150"
+              :filters="[
+                { text: '康复出院', value: '康复出院' },
+                { text: '在院治疗', value: '在院治疗' },
+                { text: '病亡', value: '病亡' },
+              ]"
+              :filter-method="filterState"
+              filter-placement="bottom-end"
+            >
+            </el-table-column>
             <el-table-column align="right">
               <template slot="header" slot-scope="scope">
                 <el-button
@@ -60,33 +73,19 @@ export default {
     };
   },
   created() {
-    this.handleUserData(), this.loadTableData();
+    this.handleUserData();
+    this.loadTableData();
   },
   methods: {
     handleUserData() {
-      if (JSON.parse(localStorage.getItem("user")).user) {
-        this.user = JSON.parse(localStorage.getItem("user")).user;
+      if (this.$store.state.user) {
+        this.user = this.$store.state.user;
+        this.isHeadNurse = this.user.u_type == "h_nurse";
       }
     },
-    loadTableData() {
-      // if (this.user) {
-      //   this.tableData[0].id = this.user.id;
-      //   this.tableData[0].name = this.user.name;
-      //   this.tableData[0].age = this.user.age;
-      //   this.tableData[0].phone = this.user.phone;
-      //   this.tableData[0].address = this.user.address;
-      //   switch (this.user.rating) {
-      //     case "mild":
-      //       this.tableData[0].rating = "轻症";
-      //       break;
-      //     case "severe":
-      //       this.tableData[0].rating = "重症";
-      //       break;
-      //     case "critical":
-      //       this.tableData[0].rating = "危重症";
-      //       break;
-      //   }
-      // }
+    loadTableData() {},
+    filterState(value, row) {
+      return row.state === value;
     },
   },
 };
