@@ -4,9 +4,15 @@ This is a course project for Database Design, Fall 2020 by Zhu Xiaoxuan & Shen Y
 
 ### Database: hims
 
+#### E-R diagram: 
+
+![](ER1.1%20(1).png)
+
 #### Tables:
 
 1. ##### user
+
+   **index**: id, u_type
 
 | Field         | Type        | Example                              |
 | ------------- | ----------- | ------------------------------------ |
@@ -20,19 +26,24 @@ This is a course project for Database Design, Fall 2020 by Zhu Xiaoxuan & Shen Y
 
 2. ##### patient
 
-| Field         | Type        | Example                  |
-| ------------- | ----------- | ------------------------ |
-| <u>**id**</u> | int         | 1                        |
-| name          | varchar(20) | Peter                    |
-| age           | varchar(20) | 20                       |
-| phone         | varchar(20) | 12345678901              |
-| address       | varchar(50) | fudan                    |
-| rating        | varchar(20) | mild / severe / critical |
-| e_nurse_id    | int         | 1                        |
-| w_nurse_id    | int         | 1                        |
-| bed_id        | int         | 1                        |
+   **index**: id, e_nurse_id, w_nurse_id, bed_id, state
+
+| Field         | Type        | Example                         |
+| ------------- | ----------- | ------------------------------- |
+| <u>**id**</u> | int         | 1                               |
+| name          | varchar(20) | Peter                           |
+| age           | varchar(20) | 20                              |
+| phone         | varchar(20) | 12345678901                     |
+| address       | varchar(50) | fudan                           |
+| rating        | varchar(20) | mild / severe / critical        |
+| e_nurse_id    | int         | 1                               |
+| w_nurse_id    | int         | 1                               |
+| bed_id        | int         | 1                               |
+| state         | varchar(20) | discharge / hospitalized / dead |
 
 3. ##### daily_report
+
+   **index**: p_id, w_nurse_id, n_report_id
 
 | Field         | Type        | Example                         |
 | ------------- | ----------- | ------------------------------- |
@@ -45,6 +56,8 @@ This is a course project for Database Design, Fall 2020 by Zhu Xiaoxuan & Shen Y
 | n_report_id   | int         | 1                               |
 
 4. ##### nat_report
+
+   **index**: p_id
 
 | Field         | Type        | Example                  |
 | ------------- | ----------- | ------------------------ |
@@ -65,12 +78,16 @@ This is a course project for Database Design, Fall 2020 by Zhu Xiaoxuan & Shen Y
 
 6. ##### ward
 
+   **index**: t_area_id
+
 | Field         | Type | Example |
 | ------------- | ---- | ------- |
 | <u>**id**</u> | int  | 1       |
 | t_area_id     | int  | 1       |
 
 7. ##### ward_nurse_ward
+
+   **index**: w_nurse_id, w_id
 
 | Field                 | Type | Example |
 | --------------------- | ---- | ------- |
@@ -79,11 +96,15 @@ This is a course project for Database Design, Fall 2020 by Zhu Xiaoxuan & Shen Y
 
 8. ##### bed
 
+   **index**: w_id, state
+
 | Field         | Type        | Example         |
 | ------------- | ----------- | --------------- |
 | <u>**id**</u> | int         | 1               |
 | w_id          | int         | 1               |
 | state         | varchar(20) | occupied / free |
+
+
 
 ## 前端
 
@@ -111,3 +132,4 @@ This is a course project for Database Design, Fall 2020 by Zhu Xiaoxuan & Shen Y
   - 空位提示：如果该治疗区域的护士或者床位没有空余，条件允许时通知病人前来住院治疗
   - 转入提示：若需要转入的治疗区域当前条件不允许转入，后继系统可以查询到此类病人，当待转入治疗区域条件满足时帮助其转入，并向该区域的护士长发出提示。
   - 出院提示：病人满足出院条件时，系统会自动向其主治医生发出提示，主治医生也可以查询到可以出院的病人及其信息，并允许病人出院。
+
