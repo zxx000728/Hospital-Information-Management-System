@@ -5,15 +5,11 @@
       <el-row type="flex" justify="center">
         <el-col type="flex" justify="center">
           <el-table :data="tableData" align="center" empty-text="暂无数据">
-            <el-table-column prop="id" label="ID" width="150">
+            <el-table-column prop="id" label="ID" width="120">
             </el-table-column>
-            <el-table-column prop="name" label="姓名" width="120">
+            <el-table-column prop="name" label="姓名" width="150">
             </el-table-column>
             <el-table-column prop="age" label="年龄" width="120">
-            </el-table-column>
-            <el-table-column prop="phone" label="电话" width="180">
-            </el-table-column>
-            <el-table-column prop="address" label="地址" width="300">
             </el-table-column>
             <el-table-column prop="rating" label="病情评级" width="150">
             </el-table-column>
@@ -27,6 +23,30 @@
                 { text: '病亡', value: '病亡' },
               ]"
               :filter-method="filterState"
+              filter-placement="bottom-end"
+            >
+            </el-table-column>
+            <el-table-column
+              prop="is_to_be_released"
+              label="待出院"
+              width="150"
+              :filters="[
+                { text: '是', value: '是' },
+                { text: '否', value: '否' },
+              ]"
+              :filter-method="filterReleased"
+              filter-placement="bottom-end"
+            >
+            </el-table-column>
+            <el-table-column
+              prop="is_to_be_transferred"
+              label="待转区"
+              width="150"
+              :filters="[
+                { text: '是', value: '是' },
+                { text: '否', value: '否' },
+              ]"
+              :filter-method="filterTransferred"
               filter-placement="bottom-end"
             >
             </el-table-column>
@@ -83,8 +103,15 @@ export default {
       }
     },
     loadTableData() {},
+
     filterState(value, row) {
       return row.state === value;
+    },
+    filterReleased(value, row) {
+      return row.is_to_be_released === value;
+    },
+    filterTransferred(value, row) {
+      return row.is_to_be_transferred === value;
     },
   },
 };
