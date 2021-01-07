@@ -52,6 +52,7 @@ import navmenu from "../components/Nav.vue";
 export default {
   name: "WorkerDataPanel",
   components: { navmenu },
+  inject: ["reload"],
   data() {
     return {
       user: {},
@@ -122,7 +123,24 @@ export default {
       this.$router.push("/workerInfo");
     },
     handleEdit(index, row) {},
-    handleDelete(index, row) {},
+    handleDelete(index, row) {
+      this.$axios
+        .get("/deleteWardNurse", {
+          params: { u_id: this.user.id, w_nurse_id: row.id },
+        })
+        .then((resp) => {
+          if (resp.status === 200) {
+            this.$message.info("成功删除！");
+            this.reload();
+          } else {
+            this.$message.error("您所请求的删除服务不可用");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          this.$message.error("请求错误，请重试");
+        });
+    },
   },
 };
 </script>

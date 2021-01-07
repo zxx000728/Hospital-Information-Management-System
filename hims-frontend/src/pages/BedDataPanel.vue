@@ -54,12 +54,13 @@ export default {
     };
   },
   created() {
-    this.handleUserData(), this.loadTableData();
+    this.handleUserData();
+    this.loadTableData();
   },
   methods: {
     handleUserData() {
-      if (JSON.parse(localStorage.getItem("user")).user) {
-        this.user = JSON.parse(localStorage.getItem("user")).user;
+      if (this.$store.state.user) {
+        this.user = this.$store.state.user;
       }
     },
     loadTableData() {

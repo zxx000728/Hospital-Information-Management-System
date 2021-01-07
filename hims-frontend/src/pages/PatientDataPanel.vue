@@ -80,7 +80,6 @@ export default {
     handleUserData() {
       if (this.$store.state.user) {
         this.user = this.$store.state.user;
-        this.isHeadNurse = this.user.u_type == "h_nurse";
       }
     },
     loadTableData() {},
