@@ -11,15 +11,6 @@ Vue.use(ElementUI);
 
 Vue.config.productionTip = false;
 
-/* eslint-disable no-new */
-new Vue({
-  el: "#app",
-  router,
-  store,
-  components: { App },
-  template: "<App/>"
-});
-
 //axios 配置
 var axios = require("axios");
 // Axios挂载到prototype，全局可以使用this.$axios访问
@@ -67,4 +58,13 @@ Vue.directive("title", {
   inserted: function(el, binding) {
     document.title = el.dataset.title;
   }
+});
+
+/* eslint-disable no-new */
+new Vue({
+  el: "#app",
+  router,
+  store,
+  components: { App },
+  template: "<App/>"
 });

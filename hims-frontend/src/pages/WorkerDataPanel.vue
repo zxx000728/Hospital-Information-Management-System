@@ -68,14 +68,16 @@ export default {
   },
   methods: {
     handleUserData() {
-      if (JSON.parse(localStorage.getItem("user")).user) {
-        this.user = JSON.parse(localStorage.getItem("user")).user;
+      if (JSON.parse(this.$store.state.user)) {
+        this.user = JSON.parse(localStorage.getItem("user"));
         this.isHeadNurse = this.user.u_type == "h_nurse";
       }
     },
     loadTableData() {
       this.$axios
-        .get("/workerDataPanel", { id: this.user.id, type: this.user.u_type })
+        .get("/workerDataPanel", {
+          params: { id: this.user.id, type: this.user.u_type },
+        })
         .then((resp) => {
           if (resp.status === 200) {
             var index = -1;
