@@ -27,4 +27,6 @@ public interface UserService {
     List<User> findWardNurseByWardId(int id);
 
     List<Patient> findPatientByWardId(int id);
+
+    void deleteWardNurseByWNurseId(int id);
 }

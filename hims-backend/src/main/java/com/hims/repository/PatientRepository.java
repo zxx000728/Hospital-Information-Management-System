@@ -21,4 +21,13 @@ public class PatientRepository {
             return null;
         }
     }
+
+    public List<Patient> findHospitalizedByWNurseId(int w_nurse_id) {
+        String sql = "select * from patient where w_nurse_id=? and state='hospitalized'";
+        try {
+            return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Patient.class), w_nurse_id);
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }

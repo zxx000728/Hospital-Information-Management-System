@@ -22,8 +22,8 @@ public class WardNurseAndWardRepository {
         }
     }
 
-    public int deleteWardNurseByWNurseId(int w_nurse_id) {
+    public void deleteWardNurseByWNurseId(int w_nurse_id) {
         String sql = "delete from ward_nurse_ward where w_nurse_id=?";
-        return jdbcTemplate.update(sql, w_nurse_id);
+        jdbcTemplate.update(sql, w_nurse_id);
     }
 }

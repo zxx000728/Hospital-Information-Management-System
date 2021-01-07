@@ -4,6 +4,7 @@ import com.hims.domain.Patient;
 import com.hims.domain.User;
 import com.hims.exception.BadCredentialsException;
 import com.hims.exception.UserNotFoundException;
+import com.hims.exception.WardNurseDeleteFailureException;
 import com.hims.repository.*;
 import com.hims.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -123,6 +124,17 @@ public class UserServiceImpl implements UserService {
     public List<Integer> findWardIdByHeadNurseId(int id) {
         int t_area_id = findTreatmentAreaIdByHeadNurseId(id);
         return wardRepository.findByTreatmentAreaId(t_area_id);
+    }
+
+    @Override
+    @Transactional
+    public void deleteWardNurseByWNurseId(int id) {
+        List<Patient> hospitalizedPatients = patientRepository.findHospitalizedByWNurseId(id);
+        if (hospitalizedPatients == null || hospitalizedPatients.size() == 0) {
+            wardNurseAndWardRepository.deleteWardNurseByWNurseId(id);
+        } else {
+            throw new WardNurseDeleteFailureException();
+        }
     }
 
     @Override
