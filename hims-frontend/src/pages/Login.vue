@@ -5,6 +5,7 @@
       <el-row type="flex" justify="center">
         <el-col :span="6">
           <el-form
+            @submit.native.prevent
             :model="loginForm"
             :rules="rules"
             status-icon
@@ -22,7 +23,10 @@
               ></el-input>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" @click="submitForm('loginForm')"
+              <el-button
+                native-type="submit"
+                type="primary"
+                @click="submitForm('loginForm')"
                 >登录</el-button
               >
             </el-form-item>
