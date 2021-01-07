@@ -20,7 +20,7 @@
             <el-table-column align="right">
               <template slot="header" slot-scope="scope">
                 <el-button
-                  v-if="this.isHeadNurse"
+                  v-if="isHeadNurse"
                   size="mini"
                   @click="handleAdd(scope.$index, scope.row)"
                   >添加</el-button
@@ -33,7 +33,7 @@
                   >详情</el-button
                 >
                 <el-button
-                  v-if="this.isHeadNurse"
+                  v-if="isHeadNurse"
                   size="mini"
                   type="danger"
                   @click="handleDelete(scope.$index, scope.row)"
@@ -64,14 +64,38 @@ export default {
   },
   created() {
     this.handleUserData();
+  },
+  mounted() {
     this.loadTableData();
   },
   methods: {
     handleUserData() {
-      if (JSON.parse(this.$store.state.user)) {
-        this.user = JSON.parse(localStorage.getItem("user"));
+      if (this.$store.state.user) {
+        this.user = JSON.parse(this.$store.state.user);
         this.isHeadNurse = this.user.u_type == "h_nurse";
       }
+    },
+    parseUType(u_type) {
+      switch (u_type) {
+        case "doctor":
+          return "主治医生";
+        case "h_nurse":
+          return "护士长";
+        case "w_nurse":
+          return "病房护士";
+        case "e_nurse":
+          return "急诊护士";
+      }
+    },
+    loadRow(index, worker) {
+      this.tableData[index] = {
+        id: worker.id,
+        name: worker.name,
+        age: worker.age,
+        email: worker.email,
+        phone: worker.phone,
+        u_type: this.parseUType(worker.u_type),
+      };
     },
     loadTableData() {
       this.$axios
@@ -83,11 +107,11 @@ export default {
             var index = -1;
             if (resp.data.headNurse) {
               index++;
-              loadRow(index, resp.data.headNurse);
+              this.loadRow(index, resp.data.headNurse);
             }
             resp.data.wardNurse.forEach((element) => {
               index++;
-              loadRow(index, element);
+              this.loadRow(index, element);
             });
           } else {
             this.$message.error("请求错误，请重试");
@@ -97,27 +121,6 @@ export default {
           console.log(error);
           this.$message.error("请求错误，请重试");
         });
-    },
-    loadRow(index, worker) {
-      this.tableData[i].id = worker.id;
-      this.tableData[i].name = worker.name;
-      this.tableData[i].age = worker.age;
-      this.tableData[i].email = worker.email;
-      this.tableData[i].phone = worker.phone;
-      switch (worker.u_type) {
-        case "doctor":
-          this.tableData[i].u_type = "主治医生";
-          break;
-        case "h_nurse":
-          this.tableData[i].u_type = "护士长";
-          break;
-        case "w_nurse":
-          this.tableData[i].u_type = "病房护士";
-          break;
-        case "e_nurse":
-          this.tableData[i].u_type = "急诊护士";
-          break;
-      }
     },
     handleAdd(index, row) {
       this.$router.push("/workerInfo");
