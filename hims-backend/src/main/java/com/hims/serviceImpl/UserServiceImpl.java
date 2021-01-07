@@ -64,6 +64,17 @@ public class UserServiceImpl implements UserService {
         return map;
     }
 
+    public Map<String, Object> getHeadNurseDataPanel(String id) {
+        Map<String, Object> map = new HashMap<>();
+        List<Integer> wards = findWardIdByHeadNurseId(Integer.parseInt(id));
+        List<User> wardNurse = new ArrayList<>();
+        for (Integer integer : wards) {
+            wardNurse.addAll(findWardNurseByWardId(integer));
+        }
+        map.put("wardNurse", wardNurse); // wardNurse
+        return map;
+    }
+
     @Override
     public void save(User user) {
         userRepository.save(user);
@@ -95,8 +106,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public int findTreatmentAreaIdByHeadNurseId(int id) {
+        return treatmentAreaRepository.findByHeadNurseId(id);
+    }
+
+    @Override
     public List<Integer> findWardIdByDoctorId(int id) {
         int t_area_id = findTreatmentAreaIdByDoctorId(id);
+        return wardRepository.findByTreatmentAreaId(t_area_id);
+    }
+
+    @Override
+    public List<Integer> findWardIdByHeadNurseId(int id) {
+        int t_area_id = findTreatmentAreaIdByHeadNurseId(id);
         return wardRepository.findByTreatmentAreaId(t_area_id);
     }
 

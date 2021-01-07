@@ -24,10 +24,12 @@ public class LoginController {
 
     @GetMapping("/workerDataPanel")
     public ResponseEntity<?> getWorkerDataPanel(@RequestParam("id") String id,
-                                                 @RequestParam("type") String type) {
+                                                @RequestParam("type") String type) {
         switch (type) {
             case "doctor":
                 return ResponseEntity.ok(userService.getDoctorDataPanel(id));
+            case "h_nurse":
+                return ResponseEntity.ok(userService.getHeadNurseDataPanel(id));
         }
         return ResponseEntity.badRequest().body("Bad request");
     }

@@ -18,7 +18,11 @@ public interface UserService {
 
     int findTreatmentAreaIdByDoctorId(int id);
 
+    int findTreatmentAreaIdByHeadNurseId(int id);
+
     List<Integer> findWardIdByDoctorId(int id);
+
+    List<Integer> findWardIdByHeadNurseId(int id);
 
     List<User> findWardNurseByWardId(int id);
 
