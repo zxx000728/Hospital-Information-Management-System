@@ -62,8 +62,8 @@ public class LoginController {
     public ResponseEntity<?> getPatientDataPanel(@RequestParam("id") String id,
                                                  @RequestParam("type") String type) {
         switch (type) {
-//            case "doctor":
-//                return ResponseEntity.ok(userService.getDoctorDataPanel(id));
+            case "doctor":
+                return ResponseEntity.ok(patientService.getPatientDataPanelByDoctorId(id));
             case "h_nurse":
                 return ResponseEntity.ok(patientService.getPatientDataPanelByHNurseId(id));
         }

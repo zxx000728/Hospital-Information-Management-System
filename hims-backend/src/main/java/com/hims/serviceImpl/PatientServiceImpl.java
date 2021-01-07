@@ -35,4 +35,15 @@ public class PatientServiceImpl implements PatientService {
         map.put("patient", patients);
         return map;
     }
+
+    public Map<String, Object> getPatientDataPanelByDoctorId(String id) {
+        Map<String, Object> map = new HashMap<>();
+        List<Integer> wards = userService.findWardIdByDoctorId(Integer.parseInt(id));
+        List<Patient> patients = new ArrayList<>();
+        for (Integer integer : wards) {
+            patients.addAll(patientRepository.findByWardId(integer));
+        }
+        map.put("patient", patients);
+        return map;
+    }
 }
