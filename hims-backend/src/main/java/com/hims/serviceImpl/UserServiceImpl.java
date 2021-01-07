@@ -8,6 +8,7 @@ import com.hims.repository.*;
 import com.hims.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -111,12 +112,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public List<Integer> findWardIdByDoctorId(int id) {
         int t_area_id = findTreatmentAreaIdByDoctorId(id);
         return wardRepository.findByTreatmentAreaId(t_area_id);
     }
 
     @Override
+    @Transactional
     public List<Integer> findWardIdByHeadNurseId(int id) {
         int t_area_id = findTreatmentAreaIdByHeadNurseId(id);
         return wardRepository.findByTreatmentAreaId(t_area_id);

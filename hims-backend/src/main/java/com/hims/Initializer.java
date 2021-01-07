@@ -37,6 +37,8 @@ class Initializer {
     private String insertWard;
     @Value(value = "${spring.datasource.createWard_nurse_ward}")
     private String createWard_nurse_ward;
+    @Value(value = "${spring.datasource.insertWard_nurse_ward}")
+    private String insertWard_nurse_ward;
     @Value(value = "${spring.datasource.createBed}")
     private String createBed;
     @Value(value = "${spring.datasource.insertBed}")
@@ -62,6 +64,7 @@ class Initializer {
         stat.executeUpdate(createWard);
         stat.executeUpdate(insertWard);
         stat.executeUpdate(createWard_nurse_ward);
+        stat.executeUpdate(insertWard_nurse_ward);
         stat.executeUpdate(createBed);
         stat.executeUpdate(insertBed);
         stat.executeUpdate(createPatient);
