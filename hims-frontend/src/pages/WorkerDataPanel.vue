@@ -67,7 +67,7 @@ export default {
   methods: {
     handleUserData() {
       if (this.$store.state.user) {
-        this.user = JSON.parse(this.$store.state.user);
+        this.user = this.$store.state.user;
         this.isHeadNurse = this.user.u_type == "h_nurse";
       }
     },
