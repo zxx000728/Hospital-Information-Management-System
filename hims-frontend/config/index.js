@@ -15,7 +15,7 @@ module.exports = {
         changeOrigin: true, //是否跨域
         pathRewrite: {
           //重写接口
-          "^/api": "/api"
+          "^/api": ""
         }
       }
     },
