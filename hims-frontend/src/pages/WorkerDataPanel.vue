@@ -117,11 +117,11 @@ export default {
           break;
       }
     },
-    handleAdd() {
+    handleAdd(index, row) {
       this.$router.push("/workerInfo");
     },
-    handleEdit() {},
-    handleDelete() {},
+    handleEdit(index, row) {},
+    handleDelete(index, row) {},
   },
 };
 </script>
