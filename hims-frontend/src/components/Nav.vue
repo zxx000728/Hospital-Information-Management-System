@@ -5,7 +5,7 @@
     <el-menu-item index="/patientDataPanel">病人面板</el-menu-item>
     <el-menu-item index="/bedDataPanel">床位面板</el-menu-item>
     <el-menu-item index="4">消息</el-menu-item>
-    <el-menu-item index="5" style="float: right">登出</el-menu-item>
+    <el-menu-item @click="handleLogout" style="float: right">登出</el-menu-item>
     <el-menu-item index="6" style="float: right">我的</el-menu-item>
   </el-menu>
 </template>
@@ -13,6 +13,12 @@
 <script>
 export default {
   name: "navmenu",
+  methods: {
+    handleLogout() {
+      this.$store.commit("logout");
+      this.$router.push("/");
+    },
+  },
 };
 </script>
 

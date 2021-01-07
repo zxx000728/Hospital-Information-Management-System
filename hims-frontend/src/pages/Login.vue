@@ -39,6 +39,7 @@ import navmenu from "../components/Nav.vue";
 export default {
   name: "Login",
   components: { navmenu },
+  inject: ["reload"],
   data() {
     return {
       loginForm: {
@@ -70,6 +71,7 @@ export default {
               center: true,
             });
             this.$router.push("/patientDataPanel");
+            this.reload();
           }
         })
         .catch((error) => {

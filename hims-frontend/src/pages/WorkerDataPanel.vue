@@ -20,7 +20,6 @@
             <el-table-column align="right">
               <template slot="header" slot-scope="scope">
                 <el-button
-                  v-if="isHeadNurse"
                   size="mini"
                   @click="handleAdd(scope.$index, scope.row)"
                   >添加</el-button
@@ -33,7 +32,6 @@
                   >详情</el-button
                 >
                 <el-button
-                  v-if="isHeadNurse"
                   size="mini"
                   type="danger"
                   @click="handleDelete(scope.$index, scope.row)"
@@ -56,7 +54,7 @@ export default {
   components: { navmenu },
   data() {
     return {
-      user: [],
+      user: {},
       tableData: [],
       isHeadNurse: false,
       loading: false,
@@ -64,8 +62,6 @@ export default {
   },
   created() {
     this.handleUserData();
-  },
-  mounted() {
     this.loadTableData();
   },
   methods: {
@@ -88,14 +84,14 @@ export default {
       }
     },
     loadRow(index, worker) {
-      this.tableData[index] = {
+      this.tableData.push({
         id: worker.id,
         name: worker.name,
         age: worker.age,
         email: worker.email,
         phone: worker.phone,
         u_type: this.parseUType(worker.u_type),
-      };
+      });
     },
     loadTableData() {
       this.$axios

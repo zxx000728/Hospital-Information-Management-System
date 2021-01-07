@@ -19,7 +19,7 @@ axios.defaults.baseURL = "/api";
 axios.defaults.withCredentials = true;
 axios.defaults.headers.post["Content-Type"] = "application/json;charset=UTF-8";
 
-// // http request 拦截器
+// http request 拦截器
 // axios.interceptors.request.use(
 //   config => {
 //     if (store.state.token) {
