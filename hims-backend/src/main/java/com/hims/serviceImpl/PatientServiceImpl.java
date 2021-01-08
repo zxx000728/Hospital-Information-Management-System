@@ -1,6 +1,8 @@
 package com.hims.serviceImpl;
 
 import com.hims.domain.Patient;
+import com.hims.repository.DailyReportRepository;
+import com.hims.repository.NATReportRepository;
 import com.hims.repository.PatientRepository;
 import com.hims.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +19,18 @@ public class PatientServiceImpl implements PatientService {
     private PatientRepository patientRepository;
     @Autowired
     private UserServiceImpl userService;
+    @Autowired
+    private DailyReportRepository dailyReportRepository;
+    @Autowired
+    private NATReportRepository natReportRepository;
 
     @Autowired
-    public PatientServiceImpl(PatientRepository patientRepository, UserServiceImpl userService) {
+    public PatientServiceImpl(PatientRepository patientRepository, UserServiceImpl userService,
+                              DailyReportRepository dailyReportRepository, NATReportRepository natReportRepository) {
         this.patientRepository = patientRepository;
         this.userService = userService;
+        this.dailyReportRepository = dailyReportRepository;
+        this.natReportRepository = natReportRepository;
     }
 
     public Map<String, Object> getPatientDataPanelByHNurseId(String id) {
