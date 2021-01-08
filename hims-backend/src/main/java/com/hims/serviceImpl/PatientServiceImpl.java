@@ -51,4 +51,10 @@ public class PatientServiceImpl implements PatientService {
         map.put("patient", patientRepository.findByWNurseId(Integer.parseInt(id)));
         return map;
     }
+
+    public Map<String, Object> getPatientDataPanelByENurseId() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("patient", patientRepository.findAll());
+        return map;
+    }
 }

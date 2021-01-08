@@ -68,6 +68,8 @@ public class LoginController {
                 return ResponseEntity.ok(patientService.getPatientDataPanelByHNurseId(id));
             case "w_nurse":
                 return ResponseEntity.ok(patientService.getPatientDataPanelByWNurseId(id));
+            case "e_nurse":
+                return ResponseEntity.ok(patientService.getPatientDataPanelByENurseId());
         }
         return new ResponseEntity<>("Bad request", HttpStatus.BAD_REQUEST);
     }
