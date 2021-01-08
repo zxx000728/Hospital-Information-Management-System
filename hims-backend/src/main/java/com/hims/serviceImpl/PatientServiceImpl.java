@@ -1,7 +1,6 @@
 package com.hims.serviceImpl;
 
 import com.hims.domain.Patient;
-import com.hims.domain.User;
 import com.hims.repository.PatientRepository;
 import com.hims.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +43,12 @@ public class PatientServiceImpl implements PatientService {
             patients.addAll(patientRepository.findByWardId(integer));
         }
         map.put("patient", patients);
+        return map;
+    }
+
+    public Map<String, Object> getPatientDataPanelByWNurseId(String id) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("patient", patientRepository.findByWNurseId(Integer.parseInt(id)));
         return map;
     }
 }
