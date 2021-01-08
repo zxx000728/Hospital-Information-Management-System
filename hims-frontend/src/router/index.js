@@ -34,6 +34,11 @@ export default new Router({
       component: PatientDataPanel
     },
     {
+      path: "/patientDataPanel/:w_id&:w_name",
+      name: "PatientDataPanel",
+      component: PatientDataPanel
+    },
+    {
       path: "/bedDataPanel",
       name: "BedDataPanel",
       component: BedDataPanel

@@ -3,6 +3,15 @@
     <el-header><navmenu></navmenu></el-header>
     <el-main>
       <el-row type="flex" justify="center">
+        <el-col align="left">
+          <el-page-header
+            @back="goBack"
+            :content="this.worker.name + '所负责的病人'"
+          >
+          </el-page-header>
+        </el-col>
+      </el-row>
+      <el-row type="flex" justify="center">
         <el-col type="flex" justify="center">
           <el-table :data="tableData" align="center" empty-text="暂无数据">
             <el-table-column prop="id" label="ID" width="120">
@@ -86,6 +95,12 @@ export default {
       tableData: [],
       isENurse: false,
       loading: false,
+
+      worker: {
+        id: "",
+        u_type: "",
+        name: "",
+      },
     };
   },
   created() {
@@ -98,11 +113,21 @@ export default {
         this.user = this.$store.state.user;
         this.isENurse = this.user.u_type == "e_nurse";
       }
+
+      if (this.$route.params.w_id && this.$route.params.w_name) {
+        this.worker.id = this.$route.params.w_id;
+        this.worker.name = this.$route.params.w_name;
+        this.worker.u_type = "w_nurse";
+      } else {
+        this.worker.id = this.user.id;
+        this.worker.name = "我";
+        this.worker.u_type = this.user.u_type;
+      }
     },
     loadTableData() {
       this.$axios
         .get("/patientDataPanel", {
-          params: { id: this.user.id, type: this.user.u_type },
+          params: { id: this.worker.id, type: this.worker.u_type },
         })
         .then((resp) => {
           if (resp.status === 200) {
@@ -179,6 +204,10 @@ export default {
     },
     filterTransferred(value, row) {
       return row.is_to_be_transferred === value;
+    },
+
+    goBack() {
+      this.$router.push("/workerDataPanel");
     },
   },
 };

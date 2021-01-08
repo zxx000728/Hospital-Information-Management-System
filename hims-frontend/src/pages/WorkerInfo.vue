@@ -3,7 +3,16 @@
     <el-header><navmenu></navmenu></el-header>
     <el-main>
       <el-row type="flex" justify="center">
-        <el-col justify="left" :span="8">
+        <el-col align="left">
+          <el-page-header
+            @back="goBack"
+            :content="'医护详情：' + this.worker.name"
+          >
+          </el-page-header>
+        </el-col>
+      </el-row>
+      <el-row type="flex" justify="center">
+        <el-col :span="8">
           <el-form
             v-if="isCreating"
             @submit.native.prevent
@@ -35,11 +44,7 @@
             </el-form-item>
           </el-form>
 
-          <el-form
-            v-if="isReading"
-            :model="workerInfoView"
-            ref="workerInfoView"
-          >
+          <el-form v-if="isReading">
             <el-form-item label="ID">
               {{ this.worker.id }}
             </el-form-item>
@@ -56,7 +61,7 @@
               {{ this.worker.phone }}
             </el-form-item>
             <el-form-item>
-              <el-button v-if="worker.isWNurse"
+              <el-button v-if="worker.isWNurse" @click="handleRead"
                 >查看{{ this.worker.name }}所负责的病人</el-button
               >
             </el-form-item>
@@ -147,6 +152,16 @@ export default {
           console.log(error);
           this.$message.error("请求错误，请重试");
         });
+    },
+
+    goBack() {
+      this.$router.push("/workerDataPanel");
+    },
+
+    handleRead() {
+      this.$router.push(
+        "/patientDataPanel/" + this.worker.id + "&" + this.worker.name
+      );
     },
 
     submitForm(formName) {
