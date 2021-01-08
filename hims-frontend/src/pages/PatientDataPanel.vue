@@ -103,29 +103,75 @@ export default {
       }
     },
     loadTableData() {
-      // this.$axios
-      //   .get("/workerDataPanel", {
-      //     params: { id: this.user.id, type: this.user.u_type },
-      //   })
-      //   .then((resp) => {
-      //     if (resp.status === 200) {
-      //       var index = -1;
-      //       if (resp.data.headNurse) {
-      //         index++;
-      //         this.loadRow(index, resp.data.headNurse);
-      //       }
-      //       resp.data.wardNurse.forEach((element) => {
-      //         index++;
-      //         this.loadRow(index, element);
-      //       });
-      //     } else {
-      //       this.$message.error("请求错误，请重试");
-      //     }
-      //   })
-      //   .catch((error) => {
-      //     console.log(error);
-      //     this.$message.error("请求错误，请重试");
-      //   });
+      this.$axios
+        .get("/patientDataPanel", {
+          params: { id: this.user.id, type: this.user.u_type },
+        })
+        .then((resp) => {
+          if (resp.status === 200) {
+            var index = -1;
+            resp.data.patient.forEach((element) => {
+              index++;
+              this.loadRow(index, element);
+            });
+          } else {
+            this.$message.error("请求错误，请重试");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          this.$message.error("请求错误，请重试");
+        });
+    },
+
+    loadRow(index, patient) {
+      this.tableData.push({
+        id: patient.id,
+        name: patient.name,
+        age: patient.age,
+        rating: this.parseRating(patient.rating),
+        state: this.parseState(patient.state),
+        is_to_be_released: this.parseReleased(patient.is_to_be_released),
+        is_to_be_transferred: this.parseTransferred(
+          patient.is_to_be_transferred
+        ),
+      });
+    },
+    parseRating(rating) {
+      switch (rating) {
+        case "mild":
+          return "轻症";
+        case "severe":
+          return "重症";
+        case "critical":
+          return "危重症";
+      }
+    },
+    parseState(state) {
+      switch (state) {
+        case "discharge":
+          return "康复出院";
+        case "hospitalized":
+          return "在院治疗";
+        case "dead":
+          return "病亡";
+      }
+    },
+    parseReleased(is_to_be_released) {
+      switch (is_to_be_released) {
+        case true:
+          return "是";
+        case false:
+          return "否";
+      }
+    },
+    parseTransferred(is_to_be_transferred) {
+      switch (is_to_be_transferred) {
+        case true:
+          return "是";
+        case false:
+          return "否";
+      }
     },
 
     filterState(value, row) {
