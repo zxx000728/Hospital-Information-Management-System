@@ -27,6 +27,15 @@ public class WardNurseAndWardRepository {
         jdbcTemplate.update(sql, w_nurse_id);
     }
 
+    public Integer findWardIdByWNurseId(int w_nurse_id){
+        String sql = "select w_id from ward_nurse_ward where w_nurse_id=?";
+        try {
+            return jdbcTemplate.queryForObject(sql, Integer.class, w_nurse_id);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
 //    public List<User> findFreeWardNurse() {
 //        String sql = "select distinct user.* from user,ward_nurse_ward where user.u_type='w_nurse' and ward_nurse_ward.w_nurse_id != user.id";
 //        try {

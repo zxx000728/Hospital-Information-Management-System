@@ -77,6 +77,39 @@ public class UserServiceImpl implements UserService {
         return map;
     }
 
+    public Map<String, Object> getWorkerInfo(String id) {
+        Map<String, Object> map = new HashMap<>();
+        User user = find(Integer.parseInt(id));
+        map.put("worker", user);
+        switch (user.getU_type()) {
+            case "e_nurse":
+                return map;
+            case "doctor": {
+                int t_area_id = findTreatmentAreaIdByDoctorId(Integer.parseInt(id));
+                map.put("t_area_id", t_area_id);
+                List<Integer> w_id = findWardIdByDoctorId(Integer.parseInt(id));
+                map.put("w_id", w_id);
+                return map;
+            }
+            case "h_nurse": {
+                int t_area_id = findTreatmentAreaIdByHeadNurseId(Integer.parseInt(id));
+                map.put("t_area_id", t_area_id);
+                List<Integer> w_id = findWardIdByHeadNurseId(Integer.parseInt(id));
+                map.put("w_id", w_id);
+                return map;
+            }
+            default: { // w_nurse
+                int w_id = wardNurseAndWardRepository.findWardIdByWNurseId(Integer.parseInt(id));
+                List<Integer> w_temp = new ArrayList<>();
+                w_temp.add(w_id);
+                int t_area_id = wardRepository.findTAreaIdByWardId(w_id);
+                map.put("t_area_id", t_area_id);
+                map.put("w_id", w_temp);
+                return map;
+            }
+        }
+    }
+
 //    public Map<String, Object> getFreeNurseData(String h_nurse_id) {
 //        Map<String, Object> map = new HashMap<>();
 //        List<Integer> wards = findWardIdByHeadNurseId(Integer.parseInt(h_nurse_id));

@@ -19,4 +19,13 @@ public class WardRepository {
             return null;
         }
     }
+
+    public Integer findTAreaIdByWardId(int id){
+        String sql = "select t_area_id from ward where id=?";
+        try {
+            return jdbcTemplate.queryForObject(sql, Integer.class, id);
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }

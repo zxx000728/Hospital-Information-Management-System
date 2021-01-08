@@ -83,6 +83,11 @@ public class LoginController {
         return ResponseEntity.ok(bedService.getBedDataPanelByHNurseId(id));
     }
 
+    @GetMapping("/workerInfo")
+    public ResponseEntity<Map<String, Object>> getWorkerInfo(@RequestParam("id") String id) {
+        return ResponseEntity.ok(userService.getWorkerInfo(id));
+    }
+
 //    @GetMapping("/getFreeNurseData")
 //    public ResponseEntity<Map<String, Object>> getFreeNurseData(@RequestParam("h_nurse_id") String h_nurse_id) {
 //        return ResponseEntity.ok(userService.getFreeNurseData(h_nurse_id));
