@@ -7,30 +7,21 @@
           <el-table :data="tableData" align="center" empty-text="暂无数据">
             <el-table-column prop="id" label="病床号" width="150">
             </el-table-column>
-            <el-table-column prop="w_id" label="病房号" width="120">
+            <el-table-column prop="w_id" label="病房号" width="150">
             </el-table-column>
-            <el-table-column prop="status" label="状态" width="120">
+            <el-table-column prop="state" label="状态" width="150">
+            </el-table-column>
+            <el-table-column prop="p_id" label="病人ID" width="150">
+            </el-table-column>
+            <el-table-column prop="p_name" label="病人姓名" width="150">
             </el-table-column>
             <el-table-column align="right">
-              <!-- <template slot="header" slot-scope="scope">
-                <el-button
-                  size="mini"
-                  @click="handleAdd(scope.$index, scope.row)"
-                  >添加</el-button
-                >
-              </template> -->
               <template slot-scope="scope">
                 <el-button
                   size="mini"
                   @click="handleEdit(scope.$index, scope.row)"
                   >详情</el-button
                 >
-                <!-- <el-button
-                  size="mini"
-                  type="danger"
-                  @click="handleDelete(scope.$index, scope.row)"
-                  >删除</el-button
-                > -->
               </template>
             </el-table-column>
           </el-table>
@@ -64,24 +55,45 @@ export default {
       }
     },
     loadTableData() {
-      // if (this.user) {
-      //   this.tableData[0].id = this.user.id;
-      //   this.tableData[0].w_id = this.user.w_id;
-      //   switch (this.user.u_type) {
-      //     case "doctor":
-      //       this.tableData[0].u_type = "主治医生";
-      //       break;
-      //     case "h_nurse":
-      //       this.tableData[0].u_type = "护士长";
-      //       break;
-      //     case "w_nurse":
-      //       this.tableData[0].u_type = "病房护士";
-      //       break;
-      //     case "e_nurse":
-      //       this.tableData[0].u_type = "急诊护士";
-      //       break;
-      //   }
-      // }
+      this.$axios
+        .get("/bedDataPanel", {
+          params: { id: this.user.id },
+        })
+        .then((resp) => {
+          if (resp.status === 200) {
+            var index = -1;
+            resp.data.bed.forEach((element) => {
+              index++;
+              this.loadRow(index, element);
+            });
+          } else {
+            this.$message.error("请求错误，请重试");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          this.$message.error("请求错误，请重试");
+        });
+    },
+
+    loadRow(index, bed) {
+      this.tableData.push({
+        id: bed.id,
+        w_id: bed.w_id,
+        state: this.parseState(bed.state),
+        p_id: bed.p_id == 0 ? "" : bed.p_id,
+        p_name: bed.p_name == null ? "" : bed.p_name,
+      });
+    },
+    parseState(state) {
+      switch (state) {
+        case "occupied":
+          return "使用中";
+        case "free":
+          return "空闲";
+        default:
+          return "未知";
+      }
     },
   },
 };

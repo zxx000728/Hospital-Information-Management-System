@@ -58,7 +58,6 @@ export default {
       user: {},
       tableData: [],
       isHeadNurse: false,
-      loading: false,
     };
   },
   created() {
