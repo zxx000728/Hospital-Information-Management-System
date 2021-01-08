@@ -45,6 +45,8 @@ class Initializer {
     private String insertBed;
     @Value(value = "${spring.datasource.createPatient}")
     private String createPatient;
+    @Value(value = "${spring.datasource.insertPatient}")
+    private String insertPatient;
     @Value(value = "${spring.datasource.createNAT_report}")
     private String createNAT_report;
     @Value(value = "${spring.datasource.createDaily_report}")
@@ -68,6 +70,7 @@ class Initializer {
         stat.executeUpdate(createBed);
         stat.executeUpdate(insertBed);
         stat.executeUpdate(createPatient);
+        stat.executeUpdate(insertPatient);
         stat.executeUpdate(createNAT_report);
         stat.executeUpdate(createDaily_report);
         stat.close();
