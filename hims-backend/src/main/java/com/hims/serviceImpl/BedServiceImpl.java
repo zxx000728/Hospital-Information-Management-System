@@ -29,9 +29,13 @@ public class BedServiceImpl implements BedService {
         List<Integer> wards = userService.findWardIdByHeadNurseId(Integer.parseInt(id));
         List<Bed> beds = new ArrayList<>();
         for (Integer integer : wards) {
-            List<Bed> temp = bedRepository.findByWardId(integer);
-            if (temp != null) {
-                beds.addAll(temp);
+            List<Bed> occupied = bedRepository.findOccupiedByWardId(integer);
+            if (occupied != null) {
+                beds.addAll(occupied);
+            }
+            List<Bed> free = bedRepository.findFreeByWardId(integer);
+            if (free != null) {
+                beds.addAll(free);
             }
         }
         map.put("bed", beds);
