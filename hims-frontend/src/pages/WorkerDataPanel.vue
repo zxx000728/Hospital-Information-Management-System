@@ -132,6 +132,8 @@ export default {
           if (resp.status === 200) {
             this.$message.info("成功删除！");
             this.reload();
+          } else if (resp.status === 401) {
+            this.$message.error("您无删除权限！");
           } else {
             this.$message.error("您所请求的删除服务不可用");
           }

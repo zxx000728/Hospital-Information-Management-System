@@ -102,7 +102,31 @@ export default {
         this.user = this.$store.state.user;
       }
     },
-    loadTableData() {},
+    loadTableData() {
+      // this.$axios
+      //   .get("/workerDataPanel", {
+      //     params: { id: this.user.id, type: this.user.u_type },
+      //   })
+      //   .then((resp) => {
+      //     if (resp.status === 200) {
+      //       var index = -1;
+      //       if (resp.data.headNurse) {
+      //         index++;
+      //         this.loadRow(index, resp.data.headNurse);
+      //       }
+      //       resp.data.wardNurse.forEach((element) => {
+      //         index++;
+      //         this.loadRow(index, element);
+      //       });
+      //     } else {
+      //       this.$message.error("请求错误，请重试");
+      //     }
+      //   })
+      //   .catch((error) => {
+      //     console.log(error);
+      //     this.$message.error("请求错误，请重试");
+      //   });
+    },
 
     filterState(value, row) {
       return row.state === value;
