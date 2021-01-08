@@ -9,6 +9,8 @@ public class Patient {
     private String rating;
     private int e_nurse_id;
     private int w_nurse_id;
+    private int t_area_id;
+    private int w_id;
     private int bed_id;
     private String state;
     private boolean is_to_be_released;
@@ -17,8 +19,20 @@ public class Patient {
     public Patient() {
     }
 
+    public Patient(String name, String age, String phone, String address,
+                   String rating, int e_nurse_id, boolean is_to_be_released, boolean is_to_be_transferred) {
+        this.name = name;
+        this.age = age;
+        this.phone = phone;
+        this.address = address;
+        this.rating = rating;
+        this.e_nurse_id = e_nurse_id;
+        this.is_to_be_released = is_to_be_released;
+        this.is_to_be_transferred = is_to_be_transferred;
+    }
+
     public Patient(int id, String name, String age, String phone, String address,
-                   String rating, int e_nurse_id, int w_nurse_id, int bed_id, String state,
+                   String rating, int e_nurse_id, int w_nurse_id, int t_area_id, int w_id, int bed_id, String state,
                    boolean is_to_be_released, boolean is_to_be_transferred) {
         this.id = id;
         this.name = name;
@@ -28,6 +42,8 @@ public class Patient {
         this.rating = rating;
         this.e_nurse_id = e_nurse_id;
         this.w_nurse_id = w_nurse_id;
+        this.t_area_id = t_area_id;
+        this.w_id = w_id;
         this.bed_id = bed_id;
         this.state = state;
         this.is_to_be_released = is_to_be_released;
@@ -114,7 +130,6 @@ public class Patient {
         this.state = state;
     }
 
-
     public boolean isIs_to_be_released() {
         return is_to_be_released;
     }
@@ -129,5 +144,21 @@ public class Patient {
 
     public void setIs_to_be_transferred(boolean is_to_be_transferred) {
         this.is_to_be_transferred = is_to_be_transferred;
+    }
+
+    public int getT_area_id() {
+        return t_area_id;
+    }
+
+    public void setT_area_id(int t_area_id) {
+        this.t_area_id = t_area_id;
+    }
+
+    public int getW_id() {
+        return w_id;
+    }
+
+    public void setW_id(int w_id) {
+        this.w_id = w_id;
     }
 }
