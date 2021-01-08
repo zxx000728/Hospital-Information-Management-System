@@ -72,7 +72,6 @@ export default {
             this.$message({
               type: "success",
               message: "欢迎登陆！",
-              center: true,
             });
             this.$router.push("/patientDataPanel");
             this.reload();
@@ -84,14 +83,12 @@ export default {
             this.$message({
               type: "error",
               message: "用户id或密码错误，请重试。",
-              center: true,
             });
             this.loading = false;
           } else {
             this.$message({
               type: "error",
               message: "服务暂时不可用，请稍后再试。",
-              center: true,
             });
             this.loading = false;
           }
