@@ -29,4 +29,8 @@ export default {
 </script>
 
 <style>
+/* 解决el-table表头与内容列不对齐 */
+.el-table th.gutter {
+  display: table-cell !important;
+}
 </style>
