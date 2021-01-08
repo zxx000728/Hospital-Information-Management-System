@@ -22,6 +22,7 @@
                 <el-button
                   size="mini"
                   @click="handleAdd(scope.$index, scope.row)"
+                  v-if="isHeadNurse"
                   >添加</el-button
                 >
               </template>
@@ -35,6 +36,7 @@
                   size="mini"
                   type="danger"
                   @click="handleDelete(scope.$index, scope.row)"
+                  v-if="isHeadNurse"
                   >删除</el-button
                 >
               </template>
@@ -58,6 +60,7 @@ export default {
       user: {},
       tableData: [],
       isHeadNurse: false,
+      isDoctor: false,
     };
   },
   created() {
@@ -69,30 +72,10 @@ export default {
       if (this.$store.state.user) {
         this.user = this.$store.state.user;
         this.isHeadNurse = this.user.u_type == "h_nurse";
+        this.isDoctor = this.user.u_type == "doctor";
       }
     },
-    parseUType(u_type) {
-      switch (u_type) {
-        case "doctor":
-          return "主治医生";
-        case "h_nurse":
-          return "护士长";
-        case "w_nurse":
-          return "病房护士";
-        case "e_nurse":
-          return "急诊护士";
-      }
-    },
-    loadRow(index, worker) {
-      this.tableData.push({
-        id: worker.id,
-        name: worker.name,
-        age: worker.age,
-        email: worker.email,
-        phone: worker.phone,
-        u_type: this.parseUType(worker.u_type),
-      });
-    },
+
     loadTableData() {
       this.$axios
         .get("/workerDataPanel", {
@@ -118,10 +101,35 @@ export default {
           this.$message.error("请求错误，请重试");
         });
     },
+    loadRow(index, worker) {
+      this.tableData.push({
+        id: worker.id,
+        name: worker.name,
+        age: worker.age,
+        email: worker.email,
+        phone: worker.phone,
+        u_type: this.parseUType(worker.u_type),
+      });
+    },
+    parseUType(u_type) {
+      switch (u_type) {
+        case "doctor":
+          return "主治医生";
+        case "h_nurse":
+          return "护士长";
+        case "w_nurse":
+          return "病房护士";
+        case "e_nurse":
+          return "急诊护士";
+      }
+    },
+
     handleAdd(index, row) {
       this.$router.push("/workerInfo");
     },
-    handleEdit(index, row) {},
+    handleEdit(index, row) {
+      this.$router.push("/workerInfo");
+    },
     handleDelete(index, row) {
       this.$axios
         .get("/deleteWardNurse", {
