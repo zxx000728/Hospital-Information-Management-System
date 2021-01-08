@@ -20,15 +20,13 @@ public class Patient {
     }
 
     public Patient(String name, String age, String phone, String address,
-                   String rating, int e_nurse_id, boolean is_to_be_released, boolean is_to_be_transferred) {
+                   String rating, int e_nurse_id) {
         this.name = name;
         this.age = age;
         this.phone = phone;
         this.address = address;
         this.rating = rating;
         this.e_nurse_id = e_nurse_id;
-        this.is_to_be_released = is_to_be_released;
-        this.is_to_be_transferred = is_to_be_transferred;
     }
 
     public Patient(int id, String name, String age, String phone, String address,

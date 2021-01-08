@@ -1,20 +1,25 @@
 package com.hims.domain;
 
-import java.sql.Date;
-import java.sql.Time;
-
 public class NatReport {
     private int id;
     private int p_id;
     private String result;
-    private Date date;
-    private Time time;
+    private String date;
+    private String time;
     private String rating;
 
     public NatReport() {
     }
 
-    public NatReport(int id, int p_id, String result, Date date, Time time, String rating) {
+    public NatReport(int p_id, String result, String date, String time, String rating) {
+        this.p_id = p_id;
+        this.result = result;
+        this.date = date;
+        this.time = time;
+        this.rating = rating;
+    }
+
+    public NatReport(int id, int p_id, String result, String date, String time, String rating) {
         this.id = id;
         this.p_id = p_id;
         this.result = result;
@@ -47,19 +52,19 @@ public class NatReport {
         this.result = result;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
-    public Time getTime() {
+    public String getTime() {
         return time;
     }
 
-    public void setTime(Time time) {
+    public void setTime(String time) {
         this.time = time;
     }
 

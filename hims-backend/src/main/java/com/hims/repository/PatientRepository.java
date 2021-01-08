@@ -4,20 +4,47 @@ import com.hims.domain.Patient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.List;
+import java.util.Objects;
 
 @Repository
 public class PatientRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public void insert(Patient patient) {
-        String sql = "insert into patient(name,age,phone,address,rating,e_nurse_id,w_nurse_id,bed_id,state,is_to_be_released,is_to_be_transferred) values (?,?,?,?,?,?,?,?,?,?,?)";
-        jdbcTemplate.update(sql, patient.getName(), patient.getAge(), patient.getPhone(), patient.getAddress(),
-                patient.getRating(), patient.getE_nurse_id(), patient.getW_nurse_id(), patient.getBed_id(), patient.getState(),
-                patient.isIs_to_be_released(), patient.isIs_to_be_transferred());
+    public void update(int id, int w_nurse_id, int bed_id, String state,
+                       int is_to_be_released, int is_to_be_transferred) {
+        String sql = "UPDATE patient SET w_nurse_id=?,bed_id=?,state=?,is_to_be_released=?,is_to_be_transferred=? WHERE id=?";
+        jdbcTemplate.update(sql, w_nurse_id, bed_id, state, is_to_be_released, is_to_be_transferred, id);
+    }
+
+    public void updateTArea(int id, int is_to_be_released, int is_to_be_transferred) {
+        String sql = "UPDATE patient SET is_to_be_released=?,is_to_be_transferred=? WHERE id=?";
+        jdbcTemplate.update(sql, is_to_be_released, is_to_be_transferred, id);
+    }
+
+    public int insert(Patient patient) {
+        String sql = "insert into patient(name,age,phone,address,rating,e_nurse_id) values (?,?,?,?,?,?)";
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        PreparedStatementCreator preparedStatementCreator = con -> {
+            PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, patient.getName());
+            ps.setString(2, patient.getAge());
+            ps.setString(3, patient.getPhone());
+            ps.setString(4, patient.getAddress());
+            ps.setString(5, patient.getRating());
+            ps.setInt(6, patient.getE_nurse_id());
+            return ps;
+        };
+        jdbcTemplate.update(preparedStatementCreator, keyHolder);
+        return Objects.requireNonNull(keyHolder.getKey()).intValue();
     }
 
     public List<Patient> findAll() {

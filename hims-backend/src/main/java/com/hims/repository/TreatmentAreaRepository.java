@@ -37,4 +37,13 @@ public class TreatmentAreaRepository {
             return null;
         }
     }
+
+    public Integer findByType(String type) {
+        String sql = "select id from treatment_area where type=?";
+        try {
+            return jdbcTemplate.queryForObject(sql, Integer.class, type);
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }

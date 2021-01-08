@@ -13,6 +13,11 @@ public class BedRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    public void updateState(int id, String state) {
+        String sql = "UPDATE bed SET state=? WHERE id=?";
+        jdbcTemplate.update(sql, state, id);
+    }
+
     public List<Bed> findOccupiedByWardId(int w_id) {
         String sql = "select bed.*,patient.id as p_id,patient.name as p_name from patient,bed where bed.w_id=? and patient.bed_id=bed.id";
         try {

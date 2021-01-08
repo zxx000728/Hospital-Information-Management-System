@@ -27,7 +27,7 @@ public class WardNurseAndWardRepository {
         jdbcTemplate.update(sql, w_nurse_id);
     }
 
-    public Integer findWardIdByWNurseId(int w_nurse_id){
+    public Integer findWardIdByWNurseId(int w_nurse_id) {
         String sql = "select w_id from ward_nurse_ward where w_nurse_id=?";
         try {
             return jdbcTemplate.queryForObject(sql, Integer.class, w_nurse_id);
@@ -36,14 +36,28 @@ public class WardNurseAndWardRepository {
         }
     }
 
-//    public List<User> findFreeWardNurse() {
-//        String sql = "select distinct user.* from user,ward_nurse_ward where user.u_type='w_nurse' and ward_nurse_ward.w_nurse_id != user.id";
-//        try {
-//            return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class));
-//        } catch (Exception e) {
-//            return null;
-//        }
-//    }
+    public Integer findFreeWardNurse(int w_id, int t_area_id) {
+        String sql = "select w_nurse_id from ward_nurse_ward where w_id=?";
+        try {
+            List<Integer> w_nurse_id = jdbcTemplate.queryForList(sql, Integer.class, w_id);
+            sql = "select count(id) from patient where w_nurse_id=? and state='hospitalized'";
+            for (Integer integer : w_nurse_id) {
+                System.out.println("w_nurse_id" + w_nurse_id);
+                int patientCount = jdbcTemplate.queryForObject(sql, Integer.class, integer);
+                System.out.println(patientCount);
+                if (t_area_id == 1 && patientCount < 3) {
+                    return integer;
+                } else if (t_area_id == 2 && patientCount < 2) {
+                    return integer;
+                } else if (t_area_id == 3 && patientCount < 1) {
+                    return integer;
+                }
+            }
+            return -1;
+        } catch (Exception e) {
+            return -1;
+        }
+    }
 //
 //    public void insertWardNurse(int w_nurse_id, int w_id) {
 //        String sql = "insert into ward_nurse_ward(w_nurse_id,w_id) values (?,?)";
