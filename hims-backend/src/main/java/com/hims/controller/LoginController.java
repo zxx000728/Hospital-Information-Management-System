@@ -3,6 +3,7 @@ package com.hims.controller;
 import com.hims.controller.request.LoginRequest;
 import com.hims.domain.User;
 import com.hims.exception.WardNurseDeleteFailureException;
+import com.hims.serviceImpl.BedServiceImpl;
 import com.hims.serviceImpl.PatientServiceImpl;
 import com.hims.serviceImpl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +19,14 @@ public class LoginController {
     private UserServiceImpl userService;
     @Autowired
     private PatientServiceImpl patientService;
+    @Autowired
+    private BedServiceImpl bedService;
 
     @Autowired
-    public LoginController(UserServiceImpl userService, PatientServiceImpl patientService) {
+    public LoginController(UserServiceImpl userService, PatientServiceImpl patientService, BedServiceImpl bedService) {
         this.userService = userService;
         this.patientService = patientService;
+        this.bedService = bedService;
     }
 
     @PostMapping("/login")
@@ -72,6 +76,11 @@ public class LoginController {
                 return ResponseEntity.ok(patientService.getPatientDataPanelByENurseId());
         }
         return new ResponseEntity<>("Bad request", HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping("/bedDataPanel")
+    public ResponseEntity<Map<String, Object>> getBedDataPanel(@RequestParam("id") String id) {
+        return ResponseEntity.ok(bedService.getBedDataPanelByHNurseId(id));
     }
 
 //    @GetMapping("/getFreeNurseData")
