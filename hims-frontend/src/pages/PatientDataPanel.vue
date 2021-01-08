@@ -55,6 +55,7 @@
                 <el-button
                   size="mini"
                   @click="handleAdd(scope.$index, scope.row)"
+                  v-if="isENurse"
                   >添加</el-button
                 >
               </template>
@@ -83,6 +84,7 @@ export default {
     return {
       user: [],
       tableData: [],
+      isENurse: false,
       loading: false,
     };
   },
@@ -94,6 +96,7 @@ export default {
     handleUserData() {
       if (this.$store.state.user) {
         this.user = this.$store.state.user;
+        this.isENurse = this.user.u_type == "e_nurse";
       }
     },
     loadTableData() {

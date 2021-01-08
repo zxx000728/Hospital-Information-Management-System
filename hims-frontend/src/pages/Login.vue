@@ -67,7 +67,7 @@ export default {
         })
         .then((resp) => {
           if (resp.status === 200 && resp.data.hasOwnProperty("user")) {
-            // Save token
+            // Save user info
             this.$store.commit("login", resp.data.user);
             this.$message({
               type: "success",
