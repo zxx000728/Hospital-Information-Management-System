@@ -3,13 +3,14 @@
     <el-header><navmenu></navmenu></el-header>
     <el-main>
       <el-row type="flex" justify="center">
-        <el-col justify="left" :span="6">
+        <el-col justify="left" :span="8">
           <el-form
+            v-if="isCreating"
             @submit.native.prevent
             :model="workerInfoForm"
             :rules="rules"
             status-icon
-            ref="loginForm"
+            ref="workerInfoForm"
             v-loading="loading"
           >
             <el-form-item label="姓名" prop="name">
@@ -28,8 +29,35 @@
               <el-button
                 native-type="submit"
                 type="primary"
-                @click="submitForm('loginForm')"
+                @click="submitForm('workerInfoForm')"
                 >提交新用户</el-button
+              >
+            </el-form-item>
+          </el-form>
+
+          <el-form
+            v-if="isReading"
+            :model="workerInfoView"
+            ref="workerInfoView"
+          >
+            <el-form-item label="ID">
+              {{ this.worker.id }}
+            </el-form-item>
+            <el-form-item label="姓名">
+              {{ this.worker.name }}
+            </el-form-item>
+            <el-form-item label="年龄">
+              {{ this.worker.age }}
+            </el-form-item>
+            <el-form-item label="Email">
+              {{ this.worker.email }}
+            </el-form-item>
+            <el-form-item label="电话">
+              {{ this.worker.phone }}
+            </el-form-item>
+            <el-form-item>
+              <el-button v-if="worker.isWNurse"
+                >查看{{ this.worker.name }}所负责的病人</el-button
               >
             </el-form-item>
           </el-form>
@@ -48,6 +76,9 @@ export default {
   data() {
     return {
       user: [],
+      isCreating: true,
+      isReading: false,
+
       workerInfoForm: {
         name: "",
         age: "",
@@ -61,12 +92,22 @@ export default {
         phone: { required: true, message: "请输入电话", blur: "change" },
       },
       loading: false,
+
+      worker: {
+        id: "",
+        name: "",
+        age: "",
+        email: "",
+        phone: "",
+        isWNurse: false,
+      },
     };
   },
   created() {
     this.handleUserData();
-    if (this.$route.params.w_id) {
-      this.loadTableData();
+    this.handleParams();
+    if (this.isReading) {
+      this.loadWorkerData();
     }
   },
   methods: {
@@ -75,14 +116,29 @@ export default {
         this.user = this.$store.state.user;
       }
     },
-    loadTableData() {
+    handleParams() {
+      if (this.$route.params.w_id) {
+        this.isReading = true;
+        this.isCreating = false;
+      }
+    },
+    loadWorkerData() {
       this.$axios
         .get("/workerInfo", {
           params: { id: this.$route.params.w_id },
         })
         .then((resp) => {
           if (resp.status === 200) {
-            // TODO
+            if (resp.data.worker) {
+              this.worker.id = resp.data.worker.id;
+              this.worker.name = resp.data.worker.name;
+              this.worker.age = resp.data.worker.age;
+              this.worker.email = resp.data.worker.email;
+              this.worker.phone = resp.data.worker.phone;
+              this.worker.isWNurse = resp.data.worker.u_type == "w_nurse";
+            } else {
+              this.$message.error("请求错误，请重试");
+            }
           } else {
             this.$message.error("请求错误，请重试");
           }
