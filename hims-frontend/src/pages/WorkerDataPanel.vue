@@ -128,7 +128,7 @@ export default {
       this.$router.push("/workerInfo");
     },
     handleEdit(index, row) {
-      this.$router.push("/workerInfo");
+      this.$router.push("/workerInfo/" + row.id);
     },
     handleDelete(index, row) {
       this.$axios

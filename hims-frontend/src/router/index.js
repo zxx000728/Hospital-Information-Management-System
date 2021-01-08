@@ -44,6 +44,11 @@ export default new Router({
       component: WorkerInfo
     },
     {
+      path: "/workerInfo/:w_id",
+      name: "WorkerInfo",
+      component: WorkerInfo
+    },
+    {
       path: "*",
       redirect: "/"
     }

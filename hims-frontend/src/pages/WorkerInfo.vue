@@ -63,8 +63,36 @@ export default {
       loading: false,
     };
   },
-  created() {},
+  created() {
+    this.handleUserData();
+    if (this.$route.params.w_id) {
+      this.loadTableData();
+    }
+  },
   methods: {
+    handleUserData() {
+      if (this.$store.state.user) {
+        this.user = this.$store.state.user;
+      }
+    },
+    loadTableData() {
+      this.$axios
+        .get("/workerInfo", {
+          params: { id: this.$route.params.w_id },
+        })
+        .then((resp) => {
+          if (resp.status === 200) {
+            // TODO
+          } else {
+            this.$message.error("请求错误，请重试");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          this.$message.error("请求错误，请重试");
+        });
+    },
+
     submitForm(formName) {
       // this.loading = true;
       // this.$axios
