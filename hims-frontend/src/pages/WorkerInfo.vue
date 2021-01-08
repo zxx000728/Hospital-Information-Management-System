@@ -100,7 +100,7 @@ export default {
 
       worker: {
         id: "",
-        name: "",
+        name: "新建",
         age: "",
         email: "",
         phone: "",

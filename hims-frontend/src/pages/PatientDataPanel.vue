@@ -20,7 +20,31 @@
             </el-table-column>
             <el-table-column prop="age" label="年龄" width="120">
             </el-table-column>
-            <el-table-column prop="rating" label="病情评级" width="150">
+            <el-table-column
+              prop="t_area_id"
+              label="所在病区"
+              width="150"
+              :filters="[
+                { text: '1', value: 1 },
+                { text: '2', value: 2 },
+                { text: '3', value: 3 },
+              ]"
+              :filter-method="filterArea"
+              filter-placement="bottom-end"
+            >
+            </el-table-column>
+            <el-table-column
+              prop="rating"
+              label="病情评级"
+              width="150"
+              :filters="[
+                { text: '轻症', value: '轻症' },
+                { text: '重症', value: '重症' },
+                { text: '危重症', value: '危重症' },
+              ]"
+              :filter-method="filterRating"
+              filter-placement="bottom-end"
+            >
             </el-table-column>
             <el-table-column
               prop="state"
@@ -151,6 +175,7 @@ export default {
         id: patient.id,
         name: patient.name,
         age: patient.age,
+        t_area_id: patient.t_area_id,
         rating: this.parseRating(patient.rating),
         state: this.parseState(patient.state),
         is_to_be_released: this.parseReleased(patient.is_to_be_released),
@@ -196,6 +221,12 @@ export default {
       }
     },
 
+    filterArea(value, row) {
+      return row.t_area_id === value;
+    },
+    filterRating(value, row) {
+      return row.rating === value;
+    },
     filterState(value, row) {
       return row.state === value;
     },
