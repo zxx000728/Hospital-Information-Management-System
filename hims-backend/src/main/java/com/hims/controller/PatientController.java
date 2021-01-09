@@ -52,6 +52,22 @@ public class PatientController {
         }
     }
 
+    @GetMapping("/addDailyReport")
+    public ResponseEntity<?> addDailyReport(@RequestParam("p_id") String p_id,
+                                            @RequestParam("date") String date,
+                                            @RequestParam("temperature") String temperature,
+                                            @RequestParam("symptom") String symptom,
+                                            @RequestParam("state") String state,
+                                            @RequestParam("w_nurse_id") String w_nurse_id) {
+        String message = reportService.addDailyReport(Integer.parseInt(p_id), date, Float.parseFloat(temperature),
+                symptom, state, Integer.parseInt(w_nurse_id));
+        if (message.equals("OK!")) {
+            return new ResponseEntity<>("OK!", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @GetMapping("/getNATReport")
     public ResponseEntity<?> getNATReport(@RequestParam("p_id") String p_id) {
         return new ResponseEntity<>(reportService.getNATReport(Integer.parseInt(p_id)), HttpStatus.OK);

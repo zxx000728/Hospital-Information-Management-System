@@ -8,12 +8,12 @@ public class DailyReport {
     private String symptom;
     private String state;
     private int w_nurse_id;
-    private int n_report_id;
+//    private int n_report_id;
 
     public DailyReport() {
     }
 
-    public DailyReport(int id, int p_id, String date, String temperature, String symptom, String state, int w_nurse_id, int n_report_id) {
+    public DailyReport(int id, int p_id, String date, String temperature, String symptom, String state, int w_nurse_id) {
         this.id = id;
         this.p_id = p_id;
         this.date = date;
@@ -21,8 +21,18 @@ public class DailyReport {
         this.symptom = symptom;
         this.state = state;
         this.w_nurse_id = w_nurse_id;
-        this.n_report_id = n_report_id;
     }
+
+//    public DailyReport(int id, int p_id, String date, String temperature, String symptom, String state, int w_nurse_id, int n_report_id) {
+//        this.id = id;
+//        this.p_id = p_id;
+//        this.date = date;
+//        this.temperature = temperature;
+//        this.symptom = symptom;
+//        this.state = state;
+//        this.w_nurse_id = w_nurse_id;
+//        this.n_report_id = n_report_id;
+//    }
 
     public int getId() {
         return id;
@@ -80,11 +90,11 @@ public class DailyReport {
         this.w_nurse_id = w_nurse_id;
     }
 
-    public int getN_report_id() {
-        return n_report_id;
-    }
-
-    public void setN_report_id(int n_report_id) {
-        this.n_report_id = n_report_id;
-    }
+//    public int getN_report_id() {
+//        return n_report_id;
+//    }
+//
+//    public void setN_report_id(int n_report_id) {
+//        this.n_report_id = n_report_id;
+//    }
 }

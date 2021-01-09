@@ -32,6 +32,16 @@ public class ReportServiceImpl implements ReportService {
         }
     }
 
+    public String addDailyReport(int p_id, String date, float temperature,
+                                 String symptom, String state, int w_nurse_id) {
+        if (dailyReportRepository.isDailyUnfilled(p_id, date)) {
+            dailyReportRepository.insert(p_id, date, temperature, symptom, state, w_nurse_id);
+            return "OK!";
+        } else {
+            return "Daily report exists!";
+        }
+    }
+
     public List<NatReport> getNATReport(int p_id) {
         return natReportRepository.findByPId(p_id);
     }
