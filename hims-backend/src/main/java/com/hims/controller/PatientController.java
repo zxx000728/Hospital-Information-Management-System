@@ -26,7 +26,7 @@ public class PatientController {
     @Transactional
     public ResponseEntity<?> addPatient(@RequestBody AddPatientRequest request) {
         Patient patient = new Patient(request.getName(), request.getAge(), request.getPhone(),
-                request.getAddress(), request.getRating(), Integer.parseInt(request.getE_nurse_id()));
+                request.getAddress(), request.getRating(), request.getE_nurse_id());
         int id = patientService.insertNewPatient(patient);
         NatReport natReport = new NatReport(id, request.getNATResult(), request.getTestDate(), request.getTestTime(), request.getRating());
         patientService.insertNewNATReport(natReport);

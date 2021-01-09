@@ -51,6 +51,28 @@ class Initializer {
     private String createNAT_report;
     @Value(value = "${spring.datasource.createDaily_report}")
     private String createDaily_report;
+    @Value(value = "${spring.datasource.dropTrigger_on_patient}")
+    private String dropTrigger_on_patient;
+    //    @Value(value = "${spring.datasource.createTrigger_on_patient}")
+//    private String createTrigger_on_patient;
+    private String sql = "CREATE TRIGGER transfer_patient AFTER UPDATE ON patient FOR EACH ROW" +
+            " BEGIN" +
+            " declare p_id int;" +
+            " if (new.state = \"discharge\") or (new.state = \"dead\") then" +
+            " update bed set state = \"free\" where id = new.bed_id;" +
+            " set p_id = (select IFNULL(min(id),-1) from patient where rating = new.rating and is_to_be_transferred = 1 and bed_id is null);" +
+            " if (p_id != -1) then" +
+            " update patient set w_nurse_id = new.w_nurse_id,bed_id = new.bed_id,state = \"hospitalized\",is_to_be_transferred = 0 where id = p_id;" +
+            " update bed set state = \"occupied\" where id = new.bed_id;" +
+            " else" +
+            " set p_id = (select IFNULL(min(id),-1) from patient where rating = new.rating and is_to_be_transferred = 1 and bed_id is not null);" +
+            " if (p_id != -1) then" +
+            " update patient set w_nurse_id = new.w_nurse_id,bed_id = new.bed_id,is_to_be_transferred = 0 where id = p_id;" +
+            " update bed set state = \"occupied\" where id = new.bed_id;" +
+            " END IF;" +
+            " END IF;" +
+            " END IF;" +
+            " END";
 
     @Bean
     public void init() throws SQLException, ClassNotFoundException {
@@ -73,6 +95,8 @@ class Initializer {
         stat.executeUpdate(insertPatient);
         stat.executeUpdate(createNAT_report);
         stat.executeUpdate(createDaily_report);
+        stat.executeUpdate(dropTrigger_on_patient);
+        stat.execute(sql);
         stat.close();
         conn.close();
     }
