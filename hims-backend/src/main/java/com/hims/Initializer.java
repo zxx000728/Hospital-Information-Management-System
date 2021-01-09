@@ -66,7 +66,7 @@ class Initializer {
             " update bed set state = \"occupied\" where id = new.bed_id;" +
             " END";
     private String drop_transfer = "DROP TRIGGER IF EXISTS transfer;";
-//
+    //
 //    private String transfer_patient = "CREATE TRIGGER transfer_patient AFTER UPDATE ON patient FOR EACH ROW" +
 //            " BEGIN" +
 //            " declare p_id int;" +
@@ -109,10 +109,18 @@ class Initializer {
             " END IF;" +
             " END";
 
-//    private String trigger_on_nat = "CREATE TRIGGER trigger_on_nat AFTER INSERT ON nat_report FOR EACH ROW"+
-//            " BEGIN"+
-//            " declare rating varchar(20);"+
-//            " set rating = "
+//    private String trigger_on_nat = "CREATE TRIGGER trigger_on_nat AFTER INSERT ON nat_report FOR EACH ROW" +
+//            " BEGIN" +
+//            " update daily_report set n_report_id = new.id where p_id = new.p_id;" +
+//            " END";
+//    private String drop_trigger_on_nat = "DROP TRIGGER IF EXISTS trigger_on_nat;";
+//    private String trigger_on_daily_report = "CREATE TRIGGER trigger_on_daily_report AFTER INSERT ON daily_report FOR EACH ROW" +
+//            " BEGIN" +
+//            " declare n_id int;" +
+//            " set n_id = (select IFNULL(max(id),0) from nat_report where nat_report.p_id = new.p_id;" +
+//            " set new.n_report_id = n_id;" +
+//            " END";
+//    private String drop_trigger_on_daily_report = "DROP TRIGGER IF EXISTS trigger_on_daily_report;";
 
     @Bean
     public void init() throws SQLException, ClassNotFoundException {
@@ -141,6 +149,10 @@ class Initializer {
         stat.execute(transfer_patient_after_add_new_wnurse);
         stat.execute(drop_transfer);
         stat.execute(transfer);
+//        stat.execute(drop_trigger_on_nat);
+//        stat.execute(trigger_on_nat);
+//        stat.execute(drop_trigger_on_daily_report);
+//        stat.execute(trigger_on_daily_report);
         stat.close();
         conn.close();
     }
