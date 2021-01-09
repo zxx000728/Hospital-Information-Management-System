@@ -138,11 +138,7 @@ export default {
         })
         .catch((error) => {
           console.log(error);
-          if (error.response.status === 400) {
-            this.$message.error("已有空白检测单，不能再新建！");
-          } else {
-            this.$message.error("请求错误，请重试");
-          }
+          this.$message.error("请求错误，请重试");
         });
     },
     handleEdit(index, row) {

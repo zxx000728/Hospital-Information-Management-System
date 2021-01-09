@@ -128,8 +128,6 @@ export default {
             date: this.drInfoForm.date,
             temperature: this.drInfoForm.temperature,
             symptom: this.drInfoForm.symptom,
-            // TODO
-            state: "hospitalized",
             w_nurse_id: this.user.id,
           },
         })
@@ -143,7 +141,11 @@ export default {
         })
         .catch((error) => {
           console.log(error);
-          this.$message.error("请求错误，请重试");
+          if (error.response.status == 400) {
+            this.$message.error("当日信息登记已存在！");
+          } else {
+            this.$message.error("请求错误，请重试");
+          }
         });
     },
   },

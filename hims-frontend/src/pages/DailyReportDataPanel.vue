@@ -6,7 +6,7 @@
         <el-col align="left">
           <el-page-header
             @back="goBack"
-            :content="this.p_name + '的核酸检测单'"
+            :content="this.p_name + '的每日信息登记'"
           >
           </el-page-header>
         </el-col>
@@ -14,30 +14,24 @@
       <el-row type="flex" justify="center">
         <el-col type="flex" justify="center">
           <el-table :data="tableData" align="center" empty-text="暂无数据">
-            <el-table-column prop="id" label="检测单ID" width="120">
+            <el-table-column prop="id" label="每日信息ID" width="120">
             </el-table-column>
-            <el-table-column prop="result" label="检测结果" width="150">
+            <el-table-column prop="date" label="日期" width="150">
             </el-table-column>
-            <el-table-column prop="date" label="检测日期" width="150">
+            <el-table-column prop="temperature" label="体温" width="150">
             </el-table-column>
-            <el-table-column prop="time" label="检测时间" width="150">
+            <el-table-column prop="symptom" label="症状" width="150">
             </el-table-column>
-            <el-table-column prop="rating" label="病情评级" width="150">
+            <el-table-column prop="state" label="生命状态" width="150">
+            </el-table-column>
+            <el-table-column prop="w_nurse_id" label="登记人ID" width="150">
             </el-table-column>
             <el-table-column align="right">
               <template slot="header" slot-scope="scopeAdd">
                 <el-button
                   size="mini"
                   @click="handleAdd(scopeAdd.$index, scopeAdd.row)"
-                  >添加空白检测单</el-button
-                >
-              </template>
-              <template slot-scope="scopeEdit">
-                <el-button
-                  v-if="scopeEdit.row.result == ''"
-                  size="mini"
-                  @click="handleEdit(scopeEdit.$index, scopeEdit.row)"
-                  >编辑检测单详情</el-button
+                  >填写新的每日信息</el-button
                 >
               </template>
             </el-table-column>
@@ -85,7 +79,7 @@ export default {
     },
     loadTableData() {
       this.$axios
-        .get("/getNATReport", {
+        .get("/getDailyReport", {
           params: { p_id: this.p_id },
         })
         .then((resp) => {
@@ -101,35 +95,34 @@ export default {
         })
         .catch((error) => {
           console.log(error);
-          this.$message.error("请求错误，请重试");
+          if (error.response.status == 400) {
+            this.$message.error("当日信息登记已存在！");
+          } else {
+            this.$message.error("请求错误，请重试");
+          }
         });
     },
 
     loadRow(index, report) {
       this.tableData.push({
         id: report.id,
-        result: report.result ? this.parseResult(report.result) : "",
-        date: report.date ? report.date : "",
-        time: report.time ? report.time : "",
-        rating: report.rating ? this.parseRating(report.rating) : "",
+        date: report.date,
+        temperature: report.temperature,
+        symptom: report.symptom,
+        state: this.parseState(report.state),
+        w_nurse_id: report.w_nurse_id,
       });
     },
-    parseRating(rating) {
-      switch (rating) {
-        case "mild":
-          return "轻症";
-        case "severe":
-          return "重症";
-        case "critical":
-          return "危重症";
-      }
-    },
-    parseResult(result) {
-      switch (result) {
-        case "positive":
-          return "阳性";
-        case "negative":
-          return "阴性";
+    parseState(state) {
+      switch (state) {
+        case "discharge":
+          return "康复出院";
+        case "hospitalized":
+          return "在院治疗";
+        case "dead":
+          return "病亡";
+        default:
+          return "隔离区";
       }
     },
 
@@ -137,31 +130,7 @@ export default {
       this.$router.push("/patientInfo/" + this.p_id);
     },
     handleAdd(index, row) {
-      this.$axios
-        .get("/addNATReport", {
-          params: {
-            p_id: this.p_id.toString(),
-          },
-        })
-        .then((resp) => {
-          if (resp.status === 200) {
-            this.$message.info("添加成功！");
-            this.reload();
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-          if (error.response.status === 400) {
-            this.$message.error("已有空白检测单，不能再新建！");
-          } else {
-            this.$message.error("请求错误，请重试");
-          }
-        });
-    },
-    handleEdit(index, row) {
-      this.$router.push(
-        "/natInfo/" + this.p_id + "&" + this.p_name + "/" + row.id
-      );
+      this.$router.push("/drInfo/" + this.p_id + "&" + this.p_name);
     },
   },
 };

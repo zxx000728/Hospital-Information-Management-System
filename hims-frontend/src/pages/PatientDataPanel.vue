@@ -23,7 +23,7 @@
             <el-table-column
               prop="t_area_id"
               label="所在病区"
-              width="150"
+              width="120"
               :filters="[
                 { text: '1', value: 1 },
                 { text: '2', value: 2 },
@@ -37,7 +37,7 @@
             <el-table-column
               prop="rating"
               label="病情评级"
-              width="150"
+              width="120"
               :filters="[
                 { text: '轻症', value: '轻症' },
                 { text: '重症', value: '重症' },
@@ -50,7 +50,7 @@
             <el-table-column
               prop="state"
               label="生命状态"
-              width="150"
+              width="120"
               :filters="[
                 { text: '康复出院', value: '康复出院' },
                 { text: '在院治疗', value: '在院治疗' },
@@ -64,7 +64,7 @@
             <el-table-column
               prop="is_to_be_released"
               label="待出院"
-              width="150"
+              width="120"
               :filters="[
                 { text: '是', value: '是' },
                 { text: '否', value: '否' },
@@ -76,7 +76,7 @@
             <el-table-column
               prop="is_to_be_transferred"
               label="待转区"
-              width="150"
+              width="120"
               :filters="[
                 { text: '是', value: '是' },
                 { text: '否', value: '否' },
@@ -99,6 +99,18 @@
                   size="mini"
                   @click="handleEdit(scope.$index, scope.row)"
                   >详情</el-button
+                >
+
+                <el-button
+                  size="mini"
+                  @click="handleNat(scope.$index, scope.row)"
+                  >查看核酸检测单</el-button
+                >
+
+                <el-button
+                  size="mini"
+                  @click="handleDr(scope.$index, scope.row)"
+                  >查看每日信息</el-button
                 >
               </template>
             </el-table-column>
@@ -246,6 +258,12 @@ export default {
     },
     handleAdd(index, row) {
       this.$router.push("/patientInfo");
+    },
+    handleNat(index, row) {
+      this.$router.push("/natDataPanel/" + row.id + "&" + row.name);
+    },
+    handleDr(index, row) {
+      this.$router.push("/drDataPanel/" + row.id + "&" + row.name);
     },
   },
 };

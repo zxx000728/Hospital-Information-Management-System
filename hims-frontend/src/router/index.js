@@ -11,6 +11,7 @@ import PatientInfo from "@/pages/PatientInfo";
 import NatDataPanel from "@/pages/NatDataPanel";
 import NatInfo from "@/pages/NatInfo";
 import DailyReportInfo from "@/pages/DailyReportInfo";
+import DailyReportDataPanel from "@/pages/DailyReportDataPanel";
 
 Vue.use(Router);
 
@@ -78,11 +79,11 @@ export default new Router({
       name: "NatInfo",
       component: NatInfo
     },
-    // {
-    //   path: "/drDataPanel/:p_id&:p_name",
-    //   name: "DailyReportDataPanel",
-    //   component: DailyReportDataPanel
-    // },
+    {
+      path: "/drDataPanel/:p_id&:p_name",
+      name: "DailyReportDataPanel",
+      component: DailyReportDataPanel
+    },
     {
       path: "/drInfo/:p_id&:p_name",
       name: "DailyReportInfo",
