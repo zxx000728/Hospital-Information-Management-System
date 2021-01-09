@@ -25,8 +25,13 @@ public class NATReportRepository {
     }
 
     public boolean isNATUnfilled(int p_id) {
-        String sql = "select id from nat_report where p_id = ? and result is null";
-        return (jdbcTemplate.queryForObject(sql, Integer.class, p_id) == null);
+        List<NatReport> natReports = findByPId(p_id);
+        for (NatReport natReport : natReports) {
+            if (natReport.getResult() == null) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public List<NatReport> findByPId(int p_id) {
