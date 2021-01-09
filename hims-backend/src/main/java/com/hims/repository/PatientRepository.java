@@ -24,6 +24,11 @@ public class PatientRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+//    public Patient find(int id) {
+//        String sql = "select * from patient where id=?";
+//        return jdbcTemplate.queryForObject(sql, Patient.class, id);
+//    }
+
     public void update(int id, int w_nurse_id, int bed_id, String state,
                        int is_to_be_released, int is_to_be_transferred) {
         String sql = "UPDATE patient SET w_nurse_id=?,bed_id=?,state=?,is_to_be_released=?,is_to_be_transferred=? WHERE id=?";
@@ -55,6 +60,16 @@ public class PatientRepository {
         };
         jdbcTemplate.update(preparedStatementCreator, keyHolder);
         return Objects.requireNonNull(keyHolder.getKey()).intValue();
+    }
+
+    public Patient find(int id) {
+        List<Patient> patients = findAll();
+        for (Patient patient : patients) {
+            if (patient.getId() == id) {
+                return patient;
+            }
+        }
+        return null;
     }
 
     public List<Patient> findAll() {
