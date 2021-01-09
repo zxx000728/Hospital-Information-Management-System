@@ -241,6 +241,9 @@ export default {
     goBack() {
       this.$router.push("/workerDataPanel");
     },
+    handleAdd(index, row) {
+      this.$router.push("/patientInfo");
+    },
   },
 };
 </script>
