@@ -88,6 +88,17 @@ public class LoginController {
         return ResponseEntity.ok(userService.getWorkerInfo(id));
     }
 
+    @GetMapping("/modifyUserInfo")
+    public ResponseEntity<?> modifyUserInfo(@RequestParam("id") String id,
+                                            @RequestParam("name") String name,
+                                            @RequestParam("password") String password,
+                                            @RequestParam("age") String age,
+                                            @RequestParam("email") String email,
+                                            @RequestParam("phone") String phone) {
+        userService.modifyUserInfo(id, name, password, age, email, phone);
+        return new ResponseEntity<>("OK!", HttpStatus.OK);
+    }
+
 //    @GetMapping("/getFreeNurseData")
 //    public ResponseEntity<Map<String, Object>> getFreeNurseData(@RequestParam("h_nurse_id") String h_nurse_id) {
 //        return ResponseEntity.ok(userService.getFreeNurseData(h_nurse_id));

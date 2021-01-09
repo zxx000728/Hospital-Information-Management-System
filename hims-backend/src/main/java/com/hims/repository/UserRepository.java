@@ -23,6 +23,11 @@ public class UserRepository {
         jdbcTemplate.update(sql, id);
     }
 
+    public void update(int id, String name, String password, String age, String email, String phone) {
+        String sql = "update user set name=?,password=?,age=?,email=?,phone=? where id=?";
+        jdbcTemplate.update(sql, name, password, age, email, phone, id);
+    }
+
     public User find(int id) {
         String sql = "select * from user where id=?";
         try {

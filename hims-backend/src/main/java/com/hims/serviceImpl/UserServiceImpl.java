@@ -200,4 +200,8 @@ public class UserServiceImpl implements UserService {
     public List<Patient> findPatientByWardId(int id) {
         return patientRepository.findByWardId(id);
     }
+
+    public void modifyUserInfo(String id, String name, String password, String age, String email, String phone) {
+        userRepository.update(Integer.parseInt(id), name, password, age, email, phone);
+    }
 }
