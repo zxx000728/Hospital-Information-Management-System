@@ -259,6 +259,9 @@ export default {
     handleAdd(index, row) {
       this.$router.push("/patientInfo");
     },
+    handleEdit(index, row) {
+      this.$router.push("/patientInfo/" + row.id);
+    },
     handleNat(index, row) {
       this.$router.push("/natDataPanel/" + row.id + "&" + row.name);
     },

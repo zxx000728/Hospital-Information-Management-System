@@ -95,8 +95,7 @@
               >
             </el-form-item>
           </el-form>
-        </el-col>
-        <!-- <el-form v-if="isReading">
+          <el-form v-if="isReading">
             <el-form-item label="ID">
               {{ this.patient.id }}
             </el-form-item>
@@ -106,14 +105,48 @@
             <el-form-item label="年龄">
               {{ this.patient.age }}
             </el-form-item>
-            <el-form-item label="Email">
-              {{ this.patient.email }}
-            </el-form-item>
             <el-form-item label="电话">
               {{ this.patient.phone }}
             </el-form-item>
+            <el-form-item label="地址">
+              {{ this.patient.address }}
+            </el-form-item>
+            <el-form-item label="病情评级">
+              {{ this.parseRating(this.patient.rating) }}
+            </el-form-item>
+            <el-form-item label="生命状态">
+              {{ this.parseState(this.patient.state) }}
+            </el-form-item>
+            <el-form-item label="待出院">
+              {{ this.parseReleased(this.patient.is_to_be_released) }}
+            </el-form-item>
+            <el-form-item label="待转院">
+              {{ this.parseTransferred(this.patient.is_to_be_transferred) }}
+            </el-form-item>
+            <el-form-item label="导入人ID">
+              {{ this.patient.e_nurse_id }}
+            </el-form-item>
+            <el-form-item label="对应病房护士ID">
+              {{ this.patient.w_nurse_id }}
+            </el-form-item>
+            <el-form-item label="所在病区">
+              {{
+                this.patient.t_area_id == 0 ? "隔离区" : this.patient.t_area_id
+              }}
+            </el-form-item>
+            <el-form-item label="病房号">
+              {{ this.patient.w_id }}
+            </el-form-item>
+            <el-form-item label="病床号">
+              {{ this.patient.bed_id }}
+            </el-form-item>
+            <el-form-item>
+              <el-button @click="handleNat()">查看核酸检测单</el-button>
 
-          </el-form> -->
+              <el-button @click="handleDr()">查看每日信息</el-button>
+            </el-form-item>
+          </el-form>
+        </el-col>
       </el-row>
     </el-main>
   </el-container>
@@ -208,15 +241,19 @@ export default {
 
       patient: {
         id: "",
-        ENurseId: "",
         name: "新建",
         age: "",
         phone: "",
         address: "",
         rating: "",
-        NATResult: "",
-        testDate: "",
-        testTime: "",
+        e_nurse_id: "",
+        w_nurse_id: "",
+        t_area_id: "",
+        w_id: "",
+        bed_id: "",
+        state: "",
+        is_to_be_released: "",
+        is_to_be_transferred: "",
       },
     };
   },
@@ -244,34 +281,92 @@ export default {
       }
     },
     loadPatientData() {
-      // this.$axios
-      //   .get("/patientInfo", {
-      //     params: { id: this.$route.params.p_id },
-      //   })
-      //   .then((resp) => {
-      //     if (resp.status === 200) {
-      //       if (resp.data.patient) {
-      //         this.patient.id = resp.data.patient.id;
-      //         this.patient.name = resp.data.patient.name;
-      //         this.patient.age = resp.data.patient.age;
-      //         this.patient.email = resp.data.patient.email;
-      //         this.patient.phone = resp.data.patient.phone;
-      //         this.patient.isWNurse = resp.data.patient.u_type == "w_nurse";
-      //       } else {
-      //         this.$message.error("请求错误，请重试");
-      //       }
-      //     } else {
-      //       this.$message.error("请求错误，请重试");
-      //     }
-      //   })
-      //   .catch((error) => {
-      //     console.log(error);
-      //     this.$message.error("请求错误，请重试");
-      //   });
+      this.$axios
+        .get("/getPatientInfo", {
+          params: { id: this.$route.params.p_id },
+        })
+        .then((resp) => {
+          if (resp.status === 200) {
+            if (resp.data) {
+              this.patient.id = resp.data.id;
+              this.patient.name = resp.data.name;
+              this.patient.age = resp.data.age;
+              this.patient.phone = resp.data.phone;
+              this.patient.address = resp.data.address;
+              this.patient.rating = resp.data.rating;
+              this.patient.e_nurse_id = resp.data.e_nurse_id;
+              this.patient.w_nurse_id = resp.data.w_nurse_id;
+              this.patient.t_area_id = resp.data.t_area_id;
+              this.patient.w_id = resp.data.w_id;
+              this.patient.bed_id = resp.data.bed_id;
+              this.patient.state = resp.data.state;
+              this.patient.is_to_be_transferred =
+                resp.data.is_to_be_transferred;
+              this.patient.is_to_be_released = resp.data.is_to_be_released;
+            } else {
+              this.$message.error("请求错误，请重试");
+            }
+          } else {
+            this.$message.error("请求错误，请重试");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          this.$message.error("请求错误，请重试");
+        });
+    },
+
+    parseRating(rating) {
+      switch (rating) {
+        case "mild":
+          return "轻症";
+        case "severe":
+          return "重症";
+        case "critical":
+          return "危重症";
+      }
+    },
+    parseState(state) {
+      switch (state) {
+        case "discharge":
+          return "康复出院";
+        case "hospitalized":
+          return "在院治疗";
+        case "dead":
+          return "病亡";
+        default:
+          return "隔离区";
+      }
+    },
+    parseReleased(is_to_be_released) {
+      switch (is_to_be_released) {
+        case true:
+          return "是";
+        case false:
+          return "否";
+      }
+    },
+    parseTransferred(is_to_be_transferred) {
+      switch (is_to_be_transferred) {
+        case true:
+          return "是";
+        case false:
+          return "否";
+      }
     },
 
     goBack() {
       this.$router.push("/patientDataPanel");
+    },
+    handleNat() {
+      this.$router.push(
+        "/natDataPanel/" + this.patient.id + "&" + this.patient.name
+      );
+    },
+    handleDr() {
+      this.$router.push(
+        "/drDataPanel/" + this.patient.id + "&" + this.patient.name
+      );
     },
 
     submitForm(formName) {
