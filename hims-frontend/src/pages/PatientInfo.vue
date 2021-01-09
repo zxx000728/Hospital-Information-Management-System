@@ -20,7 +20,7 @@
             :rules="rules"
             status-icon
             ref="patientInfoForm"
-            label-width="100px"
+            label-width="150px"
             v-loading="loading"
           >
             <el-form-item label="导入人ID" prop="e_nurse_id">
@@ -178,9 +178,31 @@ export default {
       },
 
       rules: {
+        e_nurse_id: {
+          required: true,
+          message: "请输入导入人ID",
+          blur: "change",
+        },
         name: { required: true, message: "请输入姓名", blur: "change" },
         age: { required: true, message: "请输入年龄", blur: "change" },
         phone: { required: true, message: "请输入电话", blur: "change" },
+        address: { required: true, message: "请输入地址", blur: "change" },
+        rating: { required: true, message: "请输入病情评级", blur: "change" },
+        NATResult: {
+          required: true,
+          message: "请输入核酸检测结果",
+          blur: "change",
+        },
+        testDate: {
+          required: true,
+          message: "请输入核酸检测日期",
+          blur: "change",
+        },
+        testTime: {
+          required: true,
+          message: "请输入核酸检测时间",
+          blur: "change",
+        },
       },
       loading: false,
 
@@ -217,7 +239,7 @@ export default {
         this.isCreating = false;
       } else {
         if (this.user.u_type == "e_nurse") {
-          this.patientInfoForm.e_nurse_id = this.user.id;
+          this.patientInfoForm.e_nurse_id = this.user.id.toString();
         }
       }
     },
