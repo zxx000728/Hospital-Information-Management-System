@@ -1,5 +1,8 @@
 package com.hims.controller.request;
 
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class AddPatientRequest {
     private String ENurseId;
     private String name;

@@ -276,9 +276,20 @@ export default {
 
     submitForm(formName) {
       this.loading = true;
+      console.log(this.patientInfoForm.ENurseId)
       this.$axios
-        .post("/addPatient", {
-          request: this.patientInfoForm,
+        .get("/addPatient", {
+          params: {
+            ENurseId: this.user.id.toString(),
+            name: this.patientInfoForm.name,
+            age: this.patientInfoForm.age,
+            phone: this.patientInfoForm.phone,
+            address: this.patientInfoForm.address,
+            NATResult: this.patientInfoForm.NATResult,
+            rating: this.patientInfoForm.rating,
+            testDate: this.patientInfoForm.testDate,
+            testTime: this.patientInfoForm.testTime,
+          }
         })
         .then((resp) => {
           if (resp.status === 200) {
