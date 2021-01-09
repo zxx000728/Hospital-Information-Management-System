@@ -53,6 +53,13 @@ public class PatientController {
         return new ResponseEntity<>(patientRepository.find(Integer.parseInt(id)), HttpStatus.OK);
     }
 
+    @GetMapping("/modifyPatientState")
+    public ResponseEntity<?> modifyPatientState(@RequestParam("id") String id,
+                                                @RequestParam("state") String state) {
+        patientRepository.updateState(Integer.parseInt(id), state);
+        return new ResponseEntity<>("OK!", HttpStatus.OK);
+    }
+
     @GetMapping("/addNATReport")
     public ResponseEntity<?> addNATReport(@RequestParam("p_id") String p_id) {
         String message = reportService.addNATReport(Integer.parseInt(p_id));

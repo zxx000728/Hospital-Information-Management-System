@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -38,6 +39,30 @@ public class PatientRepository {
     public void updateTArea(int id, int is_to_be_released, int is_to_be_transferred) {
         String sql = "UPDATE patient SET is_to_be_released=?,is_to_be_transferred=? WHERE id=?";
         jdbcTemplate.update(sql, is_to_be_released, is_to_be_transferred, id);
+    }
+
+    @Transactional
+    public void updateState(int id, String state) {
+        String sql = "update patient set state = ? where id=?";
+        jdbcTemplate.update(sql, state, id);
+        if (state.equals("discharge") || state.equals("dead")) {
+            Patient old_patient = find(id);
+            sql = "update bed set state = 'free' where id = ?";
+            jdbcTemplate.update(sql, old_patient.getBed_id());
+            sql = "select IFNULL(min(id),-1) from patient where rating = ? and is_to_be_transferred = 1 and bed_id = 0";
+            int p_id = jdbcTemplate.queryForObject(sql, Integer.class, old_patient.getRating());
+            if (p_id != -1) {
+                sql = "insert into to_be_transfer(p_id,w_nurse_id,bed_id,data_time) values (?,?,?,NOW())";
+                jdbcTemplate.update(sql, p_id, old_patient.getW_nurse_id(), old_patient.getBed_id());
+            } else {
+                sql = "select IFNULL(min(id),-1) from patient where rating = ? and is_to_be_transferred = 1 and bed_id != 0";
+                p_id = jdbcTemplate.queryForObject(sql, Integer.class, old_patient.getRating());
+                if (p_id != -1) {
+                    sql = "insert into to_be_transfer(p_id,w_nurse_id,bed_id,data_time) values (?,?,?,NOW())";
+                    jdbcTemplate.update(sql, p_id, old_patient.getW_nurse_id(), old_patient.getBed_id());
+                }
+            }
+        }
     }
 
     public String getPatientState(int id) {
