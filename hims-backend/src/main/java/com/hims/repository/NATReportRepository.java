@@ -37,4 +37,9 @@ public class NATReportRepository {
             return null;
         }
     }
+
+    public void update(int id, String result, String date, String time, String rating) {
+        String sql = "update nat_report set result=?,date=?,time=?,rating=? where id=?";
+        jdbcTemplate.update(sql, result, date, time, rating, id);
+    }
 }

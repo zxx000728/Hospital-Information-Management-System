@@ -27,12 +27,16 @@ public class ReportServiceImpl implements ReportService {
         if (natReportRepository.isNATUnfilled(p_id)) {
             natReportRepository.insert(p_id);
             return "OK!";
-        }else {
+        } else {
             return "Blank NAT report exists!";
         }
     }
 
     public List<NatReport> getNATReport(int p_id) {
         return natReportRepository.findByPId(p_id);
+    }
+
+    public void fillNATReport(String id, String result, String date, String time, String rating) {
+        natReportRepository.update(Integer.parseInt(id), result, date, time, rating);
     }
 }
