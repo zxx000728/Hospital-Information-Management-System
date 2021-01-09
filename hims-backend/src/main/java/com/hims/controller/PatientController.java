@@ -2,6 +2,7 @@ package com.hims.controller;
 
 import com.hims.domain.NatReport;
 import com.hims.domain.Patient;
+import com.hims.repository.PatientRepository;
 import com.hims.serviceImpl.PatientServiceImpl;
 import com.hims.serviceImpl.ReportServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +17,15 @@ public class PatientController {
     private PatientServiceImpl patientService;
     @Autowired
     private ReportServiceImpl reportService;
+    @Autowired
+    private PatientRepository patientRepository;
 
     @Autowired
-    public PatientController(PatientServiceImpl patientService, ReportServiceImpl reportService) {
+    public PatientController(PatientServiceImpl patientService, ReportServiceImpl reportService,
+                             PatientRepository patientRepository) {
         this.patientService = patientService;
         this.reportService = reportService;
+        this.patientRepository = patientRepository;
     }
 
     @GetMapping("/addPatient")
@@ -58,8 +63,8 @@ public class PatientController {
                                             @RequestParam("date") String date,
                                             @RequestParam("temperature") String temperature,
                                             @RequestParam("symptom") String symptom,
-                                            @RequestParam("state") String state,
                                             @RequestParam("w_nurse_id") String w_nurse_id) {
+        String state = patientRepository.getPatientState(Integer.parseInt(p_id));
         String message = reportService.addDailyReport(Integer.parseInt(p_id), date, Float.parseFloat(temperature),
                 symptom, state, Integer.parseInt(w_nurse_id));
         if (message.equals("OK!")) {
@@ -67,6 +72,11 @@ public class PatientController {
         } else {
             return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @GetMapping("/getDailyReport")
+    public ResponseEntity<?> getDailyReport(@RequestParam("p_id") String p_id) {
+        return new ResponseEntity<>(reportService.getDailyReport(Integer.parseInt(p_id)), HttpStatus.OK);
     }
 
     @GetMapping("/getNATReport")

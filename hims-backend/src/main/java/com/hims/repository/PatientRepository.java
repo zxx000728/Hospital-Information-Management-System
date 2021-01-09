@@ -35,6 +35,11 @@ public class PatientRepository {
         jdbcTemplate.update(sql, is_to_be_released, is_to_be_transferred, id);
     }
 
+    public String getPatientState(int id) {
+        String sql = "select state from patient where id=?";
+        return jdbcTemplate.queryForObject(sql, String.class, id);
+    }
+
     public int insert(Patient patient) {
         String sql = "insert into patient(name,age,phone,address,rating,e_nurse_id) values (?,?,?,?,?,?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -56,9 +61,9 @@ public class PatientRepository {
         String sql = "select patient.*,bed.w_id,ward.t_area_id from patient left join bed on patient.bed_id=bed.id left join ward on bed.w_id=ward.id";
         try {
 //            return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Patient.class));
-            List <Patient> patients = jdbcTemplate.query(sql, rs -> {
-                List<Patient> list= new ArrayList<>();
-                while(rs.next()){
+            List<Patient> patients = jdbcTemplate.query(sql, rs -> {
+                List<Patient> list = new ArrayList<>();
+                while (rs.next()) {
                     Patient patient = new Patient();
                     patient.setId(rs.getInt("id"));
                     patient.setName(rs.getString("name"));

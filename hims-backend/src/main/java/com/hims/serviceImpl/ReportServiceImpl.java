@@ -1,5 +1,6 @@
 package com.hims.serviceImpl;
 
+import com.hims.domain.DailyReport;
 import com.hims.domain.NatReport;
 import com.hims.repository.DailyReportRepository;
 import com.hims.repository.NATReportRepository;
@@ -44,6 +45,10 @@ public class ReportServiceImpl implements ReportService {
 
     public List<NatReport> getNATReport(int p_id) {
         return natReportRepository.findByPId(p_id);
+    }
+
+    public List<DailyReport> getDailyReport(int p_id) {
+        return dailyReportRepository.findByPId(p_id);
     }
 
     public void fillNATReport(String id, String result, String date, String time) {
