@@ -1,7 +1,7 @@
 package com.hims.controller.request;
 
 public class AddPatientRequest {
-    private int e_nurse_id;
+    private String ENurseId;
     private String name;
     private String age;
     private String phone;
@@ -14,9 +14,9 @@ public class AddPatientRequest {
     public AddPatientRequest() {
     }
 
-    public AddPatientRequest(int e_nurse_id, String name, String age, String phone,
+    public AddPatientRequest(String ENurseId, String name, String age, String phone,
                              String address, String NATResult, String rating, String testDate, String testTime) {
-        this.e_nurse_id = e_nurse_id;
+        this.ENurseId = ENurseId;
         this.name = name;
         this.age = age;
         this.phone = phone;
@@ -27,12 +27,12 @@ public class AddPatientRequest {
         this.testTime = testTime;
     }
 
-    public int getE_nurse_id() {
-        return e_nurse_id;
+    public String getENurseId() {
+        return ENurseId;
     }
 
-    public void setE_nurse_id(int e_nurse_id) {
-        this.e_nurse_id = e_nurse_id;
+    public void setENurseId(String ENurseId) {
+        this.ENurseId = ENurseId;
     }
 
     public String getName() {

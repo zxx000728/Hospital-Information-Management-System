@@ -23,9 +23,9 @@
             label-width="150px"
             v-loading="loading"
           >
-            <el-form-item label="导入人ID" prop="e_nurse_id">
+            <el-form-item label="导入人ID" prop="ENurseId">
               <el-input
-                v-model="patientInfoForm.e_nurse_id"
+                v-model="patientInfoForm.ENurseId"
                 :disabled="true"
               ></el-input>
             </el-form-item>
@@ -132,7 +132,7 @@ export default {
       isReading: false,
 
       patientInfoForm: {
-        e_nurse_id: "",
+        ENurseId: "",
         name: "",
         age: "",
         phone: "",
@@ -178,7 +178,7 @@ export default {
       },
 
       rules: {
-        e_nurse_id: {
+        ENurseId: {
           required: true,
           message: "请输入导入人ID",
           blur: "change",
@@ -208,7 +208,7 @@ export default {
 
       patient: {
         id: "",
-        e_nurse_id: "",
+        ENurseId: "",
         name: "新建",
         age: "",
         phone: "",
@@ -239,7 +239,7 @@ export default {
         this.isCreating = false;
       } else {
         if (this.user.u_type == "e_nurse") {
-          this.patientInfoForm.e_nurse_id = this.user.id.toString();
+          this.patientInfoForm.ENurseId = this.user.id.toString();
         }
       }
     },
