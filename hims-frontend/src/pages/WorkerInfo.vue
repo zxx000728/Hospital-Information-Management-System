@@ -20,6 +20,7 @@
             :rules="rules"
             status-icon
             ref="workerInfoForm"
+            label-width="100px"
             v-loading="loading"
           >
             <el-form-item label="姓名" prop="name">
@@ -34,6 +35,16 @@
             <el-form-item label="电话" prop="phone">
               <el-input v-model="workerInfoForm.phone"></el-input>
             </el-form-item>
+            <el-form-item label="所在病房" prop="w_id">
+              <el-select v-model="workerInfoForm.w_id" placeholder="请选择">
+                <el-option
+                  v-for="item in wardOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                >
+                </el-option> </el-select
+            ></el-form-item>
             <el-form-item>
               <el-button
                 native-type="submit"
@@ -89,12 +100,16 @@ export default {
         age: "",
         email: "",
         phone: "",
+        w_id: "",
       },
+      wardOptions: [],
+
       rules: {
         name: { required: true, message: "请输入姓名", blur: "change" },
         age: { required: true, message: "请输入年龄", blur: "change" },
         email: { required: true, message: "请输入Email", blur: "change" },
         phone: { required: true, message: "请输入电话", blur: "change" },
+        w_id: { required: true, message: "请输入所在病房", blur: "change" },
       },
       loading: false,
 
@@ -114,6 +129,9 @@ export default {
     if (this.isReading) {
       this.loadWorkerData();
     }
+    if (this.isCreating) {
+      this.loadWardData();
+    }
   },
   methods: {
     handleUserData() {
@@ -126,6 +144,32 @@ export default {
         this.isReading = true;
         this.isCreating = false;
       }
+    },
+    loadWardData() {
+      this.$axios
+        .get("/getWardId", {
+          params: { id: this.user.id },
+        })
+        .then((resp) => {
+          if (resp.status === 200) {
+            if (resp.data) {
+              resp.data.forEach((ward_id) => {
+                this.wardOptions.push({
+                  value: ward_id.toString(),
+                  label: ward_id.toString(),
+                });
+              });
+            } else {
+              this.$message.error("请求错误，请重试");
+            }
+          } else {
+            this.$message.error("请求错误，请重试");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          this.$message.error("请求错误，请重试");
+        });
     },
     loadWorkerData() {
       this.$axios
@@ -165,38 +209,29 @@ export default {
     },
 
     submitForm(formName) {
-      // this.loading = true;
-      // this.$axios
-      //   .post("/login", {
-      //     id: this.loginForm.id,
-      //     password: this.loginForm.password,
-      //   })
-      //   .then((resp) => {
-      //     if (resp.status === 200 && resp.data.hasOwnProperty("user")) {
-      //       this.$message({
-      //         type: "success",
-      //         message: "欢迎登陆！",
-      //       });
-      //       this.$router.push("/patientDataPanel");
-      //       this.reload();
-      //     }
-      //   })
-      //   .catch((error) => {
-      //     console.log(error);
-      //     if (error.message == "Request failed with status code 403") {
-      //       this.$message({
-      //         type: "error",
-      //         message: "用户id或密码错误，请重试。",
-      //       });
-      //       this.loading = false;
-      //     } else {
-      //       this.$message({
-      //         type: "error",
-      //         message: "服务暂时不可用，请稍后再试。",
-      //       });
-      //       this.loading = false;
-      //     }
-      //   });
+      this.loading = true;
+      this.$axios
+        .get("/addWardNurse", {
+          params: {
+            w_id: this.workerInfoForm.w_id,
+            name: this.workerInfoForm.name,
+            age: this.workerInfoForm.age,
+            email: this.workerInfoForm.email,
+            phone: this.workerInfoForm.phone,
+          },
+        })
+        .then((resp) => {
+          this.loading = false;
+          if (resp.status === 200) {
+            this.$router.push("/workerDataPanel");
+          } else {
+            this.$message.error("请求错误，请重试");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          this.$message.error("请求错误，请重试");
+        });
     },
   },
 };

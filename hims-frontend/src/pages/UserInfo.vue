@@ -187,7 +187,7 @@ export default {
         .then((resp) => {
           this.loading = false;
           if (resp.status === 200) {
-            this.$router.push("/workerDataPanel");
+            this.$router.push("/patientDataPanel");
           } else {
             this.$message.error("请求错误，请重试");
           }
