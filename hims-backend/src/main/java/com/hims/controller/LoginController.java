@@ -88,6 +88,11 @@ public class LoginController {
         return ResponseEntity.ok(userService.getWorkerInfo(id));
     }
 
+    @GetMapping("/getWardId")
+    public ResponseEntity<?> getWardId(@RequestParam("id") String id) {
+        return ResponseEntity.ok(userService.findWardIdByHeadNurseId(Integer.parseInt(id)));
+    }
+
     @GetMapping("/modifyUserInfo")
     public ResponseEntity<?> modifyUserInfo(@RequestParam("id") String id,
                                             @RequestParam("name") String name,

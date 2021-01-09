@@ -1,11 +1,9 @@
 package com.hims.domain;
 
-import java.sql.Date;
-
 public class DailyReport {
     private int id;
     private int p_id;
-    private Date date;
+    private String date;
     private String temperature;
     private String symptom;
     private String state;
@@ -15,7 +13,7 @@ public class DailyReport {
     public DailyReport() {
     }
 
-    public DailyReport(int id, int p_id, Date date, String temperature, String symptom, String state, int w_nurse_id, int n_report_id) {
+    public DailyReport(int id, int p_id, String date, String temperature, String symptom, String state, int w_nurse_id, int n_report_id) {
         this.id = id;
         this.p_id = p_id;
         this.date = date;
@@ -42,11 +40,11 @@ public class DailyReport {
         this.p_id = p_id;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
