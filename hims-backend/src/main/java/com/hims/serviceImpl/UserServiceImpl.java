@@ -204,4 +204,10 @@ public class UserServiceImpl implements UserService {
     public void modifyUserInfo(String id, String name, String password, String age, String email, String phone) {
         userRepository.update(Integer.parseInt(id), name, password, age, email, phone);
     }
+
+    @Transactional
+    public void addWardNurse(String w_id, String name, String age, String email, String phone) {
+        int id = userRepository.saveWNurse(name, age, email, phone);
+        wardNurseAndWardRepository.insertWardNurse(id, Integer.parseInt(w_id));
+    }
 }

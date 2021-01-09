@@ -99,6 +99,16 @@ public class LoginController {
         return new ResponseEntity<>("OK!", HttpStatus.OK);
     }
 
+    @GetMapping("/addWardNurse")
+    public ResponseEntity<?> addWardNurse(@RequestParam("w_id") String w_id,
+                                          @RequestParam("name") String name,
+                                          @RequestParam("age") String age,
+                                          @RequestParam("email") String email,
+                                          @RequestParam("phone") String phone) {
+        userService.addWardNurse(w_id, name, age, email, phone);
+        return new ResponseEntity<>("OK!", HttpStatus.OK);
+    }
+
 //    @GetMapping("/getFreeNurseData")
 //    public ResponseEntity<Map<String, Object>> getFreeNurseData(@RequestParam("h_nurse_id") String h_nurse_id) {
 //        return ResponseEntity.ok(userService.getFreeNurseData(h_nurse_id));

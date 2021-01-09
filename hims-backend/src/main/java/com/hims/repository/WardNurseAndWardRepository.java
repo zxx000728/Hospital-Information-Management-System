@@ -58,9 +58,9 @@ public class WardNurseAndWardRepository {
             return -1;
         }
     }
-//
-//    public void insertWardNurse(int w_nurse_id, int w_id) {
-//        String sql = "insert into ward_nurse_ward(w_nurse_id,w_id) values (?,?)";
-//        jdbcTemplate.update(sql, w_nurse_id, w_id);
-//    }
+
+    public void insertWardNurse(int w_nurse_id, int w_id) {
+        String sql = "insert into ward_nurse_ward(w_nurse_id,w_id) values (?,?)";
+        jdbcTemplate.update(sql, w_nurse_id, w_id);
+    }
 }
