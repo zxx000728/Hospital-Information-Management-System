@@ -24,6 +24,11 @@ public class NATReportRepository {
         jdbcTemplate.update(sql, p_id);
     }
 
+    public boolean isNATUnfilled(int p_id) {
+        String sql = "select id from nat_report where p_id = ? and result is null";
+        return (jdbcTemplate.queryForObject(sql, Integer.class, p_id) == null);
+    }
+
     public List<NatReport> findByPId(int p_id) {
         String sql = "select * from nat_report where p_id = ?";
         try {

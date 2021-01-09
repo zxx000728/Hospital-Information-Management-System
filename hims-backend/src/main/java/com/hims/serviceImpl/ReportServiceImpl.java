@@ -23,8 +23,13 @@ public class ReportServiceImpl implements ReportService {
         this.dailyReportRepository = dailyReportRepository;
     }
 
-    public void addNATReport(int p_id) {
-        natReportRepository.insert(p_id);
+    public String addNATReport(int p_id) {
+        if (natReportRepository.isNATUnfilled(p_id)) {
+            natReportRepository.insert(p_id);
+            return "OK!";
+        }else {
+            return "Blank NAT report exists!";
+        }
     }
 
     public List<NatReport> getNATReport(int p_id) {
