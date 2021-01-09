@@ -114,8 +114,28 @@
             <el-form-item label="病情评级">
               {{ this.parseRating(this.patient.rating) }}
             </el-form-item>
-            <el-form-item label="生命状态">
+            <el-form-item label="生命状态" v-if="!isModifyingState">
               {{ this.parseState(this.patient.state) }}
+              <el-button type="text" @click="handleModifyState()"
+                >修改</el-button
+              >
+            </el-form-item>
+            <el-form-item label="生命状态" v-if="isModifyingState">
+              <el-select v-model="tempState">
+                <el-option
+                  v-for="item in stateOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                >
+                </el-option>
+              </el-select>
+              <el-button type="text" @click="submitModifyState()"
+                >提交</el-button
+              >
+              <el-button type="text" @click="cancelModifyState()"
+                >取消</el-button
+              >
             </el-form-item>
             <el-form-item label="待出院">
               {{ this.parseReleased(this.patient.is_to_be_released) }}
@@ -158,11 +178,15 @@ import navmenu from "../components/Nav.vue";
 export default {
   name: "PatientInfo",
   components: { navmenu },
+  inject: ["reload"],
   data() {
     return {
       user: [],
       isCreating: true,
       isReading: false,
+
+      isModifyingState: false,
+      tempState: "hospitalized",
 
       patientInfoForm: {
         ENurseId: "",
@@ -188,6 +212,24 @@ export default {
         {
           value: "critical",
           label: "危重症",
+        },
+      ],
+      stateOptions: [
+        {
+          value: "discharge",
+          label: "康复出院",
+        },
+        {
+          value: "hospitalized",
+          label: "在院治疗",
+        },
+        {
+          value: "dead",
+          label: "病亡",
+        },
+        {
+          value: "null",
+          label: "隔离区",
         },
       ],
       NATResultOptions: [
@@ -397,6 +439,33 @@ export default {
           console.log(error);
           this.$message.error("请求错误，请重试");
         });
+    },
+
+    handleModifyState() {
+      this.isModifyingState = true;
+    },
+    submitModifyState() {
+      this.$axios
+        .get("/modifyPatientState", {
+          params: {
+            id: this.patient.id.toString(),
+            state: this.tempState,
+          },
+        })
+        .then((resp) => {
+          if (resp.status === 200) {
+            this.$message.info("修改成功！");
+            this.reload();
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          this.$message.error("请求错误，请重试");
+        });
+    },
+    cancelModifyState() {
+      this.isModifyingState = false;
+      this.tempState = "hospitalized";
     },
   },
 };
