@@ -55,6 +55,7 @@
                 { text: '康复出院', value: '康复出院' },
                 { text: '在院治疗', value: '在院治疗' },
                 { text: '病亡', value: '病亡' },
+                { text: '隔离区', value: '隔离区' },
               ]"
               :filter-method="filterState"
               filter-placement="bottom-end"
@@ -176,7 +177,7 @@ export default {
         id: patient.id,
         name: patient.name,
         age: patient.age,
-        t_area_id: patient.t_area_id == null ? "隔离区" : patient.t_area_id,
+        t_area_id: patient.t_area_id == 0 ? "隔离区" : patient.t_area_id,
         rating: this.parseRating(patient.rating),
         state: this.parseState(patient.state),
         is_to_be_released: this.parseReleased(patient.is_to_be_released),
@@ -203,6 +204,8 @@ export default {
           return "在院治疗";
         case "dead":
           return "病亡";
+        default:
+          return "隔离区";
       }
     },
     parseReleased(is_to_be_released) {

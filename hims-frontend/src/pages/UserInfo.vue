@@ -172,38 +172,30 @@ export default {
     },
 
     submitForm(formName) {
-      // this.loading = true;
-      // this.$axios
-      //   .post("/login", {
-      //     id: this.loginForm.id,
-      //     password: this.loginForm.password,
-      //   })
-      //   .then((resp) => {
-      //     if (resp.status === 200 && resp.data.hasOwnProperty("user")) {
-      //       this.$message({
-      //         type: "success",
-      //         message: "欢迎登陆！",
-      //       });
-      //       this.$router.push("/patientDataPanel");
-      //       this.reload();
-      //     }
-      //   })
-      //   .catch((error) => {
-      //     console.log(error);
-      //     if (error.message == "Request failed with status code 403") {
-      //       this.$message({
-      //         type: "error",
-      //         message: "用户id或密码错误，请重试。",
-      //       });
-      //       this.loading = false;
-      //     } else {
-      //       this.$message({
-      //         type: "error",
-      //         message: "服务暂时不可用，请稍后再试。",
-      //       });
-      //       this.loading = false;
-      //     }
-      //   });
+      this.loading = true;
+      this.$axios
+        .get("/modifyUserInfo", {
+          params: {
+            id: this.user.id.toString(),
+            name: this.userInfoForm.name,
+            password: this.userInfoForm.password,
+            age: this.userInfoForm.age,
+            email: this.userInfoForm.email,
+            phone: this.userInfoForm.phone,
+          },
+        })
+        .then((resp) => {
+          this.loading = false;
+          if (resp.status === 200) {
+            this.$router.push("/workerDataPanel");
+          } else {
+            this.$message.error("请求错误，请重试");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          this.$message.error("请求错误，请重试");
+        });
     },
   },
 };

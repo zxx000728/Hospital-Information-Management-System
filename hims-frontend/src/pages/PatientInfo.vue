@@ -276,7 +276,6 @@ export default {
 
     submitForm(formName) {
       this.loading = true;
-      console.log(this.patientInfoForm.ENurseId)
       this.$axios
         .get("/addPatient", {
           params: {
@@ -289,16 +288,19 @@ export default {
             rating: this.patientInfoForm.rating,
             testDate: this.patientInfoForm.testDate,
             testTime: this.patientInfoForm.testTime,
-          }
+          },
         })
         .then((resp) => {
+          this.loading = false;
           if (resp.status === 200) {
-            this.loading = false;
             this.$router.push("/patientDataPanel");
+          } else {
+            this.$message.error("请求错误，请重试");
           }
         })
         .catch((error) => {
           console.log(error);
+          this.$message.error("请求错误，请重试");
         });
     },
   },
