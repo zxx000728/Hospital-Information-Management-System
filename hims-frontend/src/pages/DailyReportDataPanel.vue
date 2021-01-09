@@ -29,6 +29,7 @@
             <el-table-column align="right">
               <template slot="header" slot-scope="scopeAdd">
                 <el-button
+                  v-if="isEditable"
                   size="mini"
                   @click="handleAdd(scopeAdd.$index, scopeAdd.row)"
                   >填写新的每日信息</el-button
@@ -53,6 +54,7 @@ export default {
     return {
       user: [],
       tableData: [],
+      isEditable: false,
 
       p_id: null,
       p_name: null,
@@ -68,6 +70,9 @@ export default {
     handleUserData() {
       if (this.$store.state.user) {
         this.user = this.$store.state.user;
+        if (this.user.u_type == "w_nurse") {
+          this.isEditable = true;
+        }
       }
 
       if (this.$route.params.p_id && this.$route.params.p_name) {

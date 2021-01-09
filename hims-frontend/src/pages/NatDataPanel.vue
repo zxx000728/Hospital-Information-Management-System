@@ -25,6 +25,7 @@
             <el-table-column align="right">
               <template slot="header" slot-scope="scopeAdd">
                 <el-button
+                  v-if="isEditable"
                   size="mini"
                   @click="handleAdd(scopeAdd.$index, scopeAdd.row)"
                   >添加空白检测单</el-button
@@ -32,7 +33,7 @@
               </template>
               <template slot-scope="scopeEdit">
                 <el-button
-                  v-if="scopeEdit.row.result == ''"
+                  v-if="scopeEdit.row.result == '' && isEditable"
                   size="mini"
                   @click="handleEdit(scopeEdit.$index, scopeEdit.row)"
                   >编辑检测单详情</el-button
@@ -57,6 +58,7 @@ export default {
     return {
       user: [],
       tableData: [],
+      isEditable: false,
 
       p_id: null,
       p_name: null,
@@ -72,6 +74,9 @@ export default {
     handleUserData() {
       if (this.$store.state.user) {
         this.user = this.$store.state.user;
+        if (this.user.u_type == "w_nurse" || this.user.u_type == "doctor") {
+          this.isEditable = true;
+        }
       }
 
       if (this.$route.params.p_id && this.$route.params.p_name) {
