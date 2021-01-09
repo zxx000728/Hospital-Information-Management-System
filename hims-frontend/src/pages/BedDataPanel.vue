@@ -18,9 +18,10 @@
             <el-table-column align="right">
               <template slot-scope="scope">
                 <el-button
+                  v-if="scope.row.p_id != 0"
                   size="mini"
                   @click="handleEdit(scope.$index, scope.row)"
-                  >详情</el-button
+                  >查看对应病人</el-button
                 >
               </template>
             </el-table-column>
@@ -94,6 +95,10 @@ export default {
         default:
           return "未知";
       }
+    },
+
+    handleEdit(index, row) {
+      this.$router.push("/patientInfo/" + row.p_id);
     },
   },
 };

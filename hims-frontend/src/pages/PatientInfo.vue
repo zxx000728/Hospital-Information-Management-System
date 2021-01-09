@@ -116,7 +116,10 @@
             </el-form-item>
             <el-form-item label="生命状态" v-if="!isModifyingState">
               {{ this.parseState(this.patient.state) }}
-              <el-button type="text" @click="handleModifyState()"
+              <el-button
+                v-if="isDoctor"
+                type="text"
+                @click="handleModifyState()"
                 >修改</el-button
               >
             </el-form-item>
@@ -184,6 +187,7 @@ export default {
       user: [],
       isCreating: true,
       isReading: false,
+      isDoctor: false,
 
       isModifyingState: false,
       tempState: "hospitalized",
@@ -310,6 +314,7 @@ export default {
     handleUserData() {
       if (this.$store.state.user) {
         this.user = this.$store.state.user;
+        this.isDoctor = this.$store.state.user.u_type == "doctor";
       }
     },
     handleParams() {
