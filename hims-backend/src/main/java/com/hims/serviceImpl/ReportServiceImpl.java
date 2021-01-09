@@ -18,4 +18,8 @@ public class ReportServiceImpl implements ReportService {
         this.natReportRepository = natReportRepository;
         this.dailyReportRepository = dailyReportRepository;
     }
+
+    public void addNATReport(int p_id) {
+        natReportRepository.insert(p_id);
+    }
 }

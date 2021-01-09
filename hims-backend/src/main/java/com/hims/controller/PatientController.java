@@ -3,6 +3,7 @@ package com.hims.controller;
 import com.hims.domain.NatReport;
 import com.hims.domain.Patient;
 import com.hims.serviceImpl.PatientServiceImpl;
+import com.hims.serviceImpl.ReportServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,10 +14,13 @@ import org.springframework.web.bind.annotation.*;
 public class PatientController {
     @Autowired
     private PatientServiceImpl patientService;
+    @Autowired
+    private ReportServiceImpl reportService;
 
     @Autowired
-    public PatientController(PatientServiceImpl patientService) {
+    public PatientController(PatientServiceImpl patientService, ReportServiceImpl reportService) {
         this.patientService = patientService;
+        this.reportService = reportService;
     }
 
     @GetMapping("/addPatient")
@@ -36,5 +40,11 @@ public class PatientController {
         NatReport natReport = new NatReport(id, NATResult, testDate, testTime, rating);
         patientService.insertNewNATReport(natReport);
         return new ResponseEntity<>(patientService.transferPatient(id, rating), HttpStatus.OK);
+    }
+
+    @GetMapping("/addNATReport")
+    public ResponseEntity<?> addNATReport(@RequestParam("p_id") String p_id) {
+        reportService.addNATReport(Integer.parseInt(p_id));
+        return new ResponseEntity<>("OK!", HttpStatus.OK);
     }
 }
