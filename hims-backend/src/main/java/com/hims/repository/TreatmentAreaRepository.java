@@ -29,6 +29,15 @@ public class TreatmentAreaRepository {
         }
     }
 
+    public String findTypeByHNurseId(int h_nurse_id) {
+        String sql = "select type from treatment_area where h_nurse_id=?";
+        try {
+            return jdbcTemplate.queryForObject(sql, String.class, h_nurse_id);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     public Integer findByHeadNurseId(int h_nurse_id) {
         String sql = "select id from treatment_area where h_nurse_id=?";
         try {

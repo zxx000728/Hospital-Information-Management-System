@@ -4,6 +4,7 @@ import com.hims.domain.NatReport;
 import com.hims.domain.Patient;
 import com.hims.domain.User;
 import com.hims.repository.PatientRepository;
+import com.hims.repository.TreatmentAreaRepository;
 import com.hims.repository.UserRepository;
 import com.hims.serviceImpl.PatientServiceImpl;
 import com.hims.serviceImpl.ReportServiceImpl;
@@ -23,14 +24,18 @@ public class PatientController {
     private PatientRepository patientRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private TreatmentAreaRepository treatmentAreaRepository;
 
     @Autowired
     public PatientController(PatientServiceImpl patientService, ReportServiceImpl reportService,
-                             PatientRepository patientRepository, UserRepository userRepository) {
+                             PatientRepository patientRepository, UserRepository userRepository,
+                             TreatmentAreaRepository treatmentAreaRepository) {
         this.patientService = patientService;
         this.reportService = reportService;
         this.patientRepository = patientRepository;
         this.userRepository = userRepository;
+        this.treatmentAreaRepository = treatmentAreaRepository;
     }
 
     @GetMapping("/addPatient")
@@ -64,11 +69,12 @@ public class PatientController {
         return new ResponseEntity<>("OK!", HttpStatus.OK);
     }
 
-//    @GetMapping("/modifyPatientRating")
-//    public ResponseEntity<?> modifyPatientRating(@RequestParam("id") String id,
-//                                                 @RequestParam("rating") String rating) {
-//
-//    }
+    @GetMapping("/modifyPatientRating")
+    public ResponseEntity<?> modifyPatientRating(@RequestParam("id") String id,
+                                                 @RequestParam("rating") String rating) {
+        patientRepository.updateRating(Integer.parseInt(id), rating);
+        return new ResponseEntity<>(patientService.transferPatientToOther(Integer.parseInt(id), rating), HttpStatus.OK);
+    }
 
     @GetMapping("/getMessage")
     public ResponseEntity<?> getMessage(@RequestParam("id") String id) {
@@ -76,8 +82,32 @@ public class PatientController {
         switch (user.getU_type()) {
             case "doctor":
                 return new ResponseEntity<>(patientRepository.getReleasedPatient(), HttpStatus.OK);
+            case "h_nurse":
+                String rating = treatmentAreaRepository.findTypeByHNurseId(user.getId());
+                return new ResponseEntity<>(patientRepository.getToTransfer(rating), HttpStatus.OK);
         }
         return new ResponseEntity<>("Bad!", HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping("/transfer")
+    public ResponseEntity<?> transfer(@RequestParam("id") String id,
+                                      @RequestParam("t_area_id") String t_area_id) {
+        String rating;
+        switch (t_area_id) {
+            case "1":
+                rating = "mild";
+                break;
+            case "2":
+                rating = "severe";
+                break;
+            case "3":
+                rating = "critical";
+                break;
+            default:
+                rating = "";
+                break;
+        }
+        return new ResponseEntity<>(patientService.transferPatientToOther(Integer.parseInt(id), rating), HttpStatus.OK);
     }
 
     @GetMapping("/modifyPatientState")

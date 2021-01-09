@@ -36,6 +36,11 @@ public class PatientRepository {
 //        return jdbcTemplate.queryForObject(sql, Patient.class, id);
 //    }
 
+    public List<Patient> getToTransfer(String rating) {
+        String sql = "select patient.*,bed.w_id,ward.t_area_id from patient left join bed on patient.bed_id=bed.id left join ward on bed.w_id=ward.id where patient.rating = ? and patient.is_to_be_transferred = 1 and patient.bed_id is not null and bed.w_id is not null";
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Patient.class), rating);
+    }
+
     public void update(int id, int w_nurse_id, int bed_id, String state,
                        int is_to_be_released, int is_to_be_transferred) {
         String sql = "UPDATE patient SET w_nurse_id=?,bed_id=?,state=?,is_to_be_released=?,is_to_be_transferred=? WHERE id=?";
@@ -55,7 +60,7 @@ public class PatientRepository {
 
     @Transactional
     public void updateRating(int id, String rating) {
-        String sql = "update patient set rating = ? where id=?";
+        String sql = "update patient set rating = ?,is_to_be_transferred = 1 where id=?";
         jdbcTemplate.update(sql, rating, id);
 
     }
