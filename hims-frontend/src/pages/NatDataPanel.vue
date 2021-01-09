@@ -22,8 +22,6 @@
             </el-table-column>
             <el-table-column prop="time" label="检测时间" width="150">
             </el-table-column>
-            <el-table-column prop="rating" label="病情评级" width="150">
-            </el-table-column>
             <el-table-column align="right">
               <template slot="header" slot-scope="scopeAdd">
                 <el-button
@@ -111,18 +109,7 @@ export default {
         result: report.result ? this.parseResult(report.result) : "",
         date: report.date ? report.date : "",
         time: report.time ? report.time : "",
-        rating: report.rating ? this.parseRating(report.rating) : "",
       });
-    },
-    parseRating(rating) {
-      switch (rating) {
-        case "mild":
-          return "轻症";
-        case "severe":
-          return "重症";
-        case "critical":
-          return "危重症";
-      }
     },
     parseResult(result) {
       switch (result) {
