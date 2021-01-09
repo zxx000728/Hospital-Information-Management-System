@@ -2,7 +2,9 @@ package com.hims.controller;
 
 import com.hims.domain.NatReport;
 import com.hims.domain.Patient;
+import com.hims.domain.User;
 import com.hims.repository.PatientRepository;
+import com.hims.repository.UserRepository;
 import com.hims.serviceImpl.PatientServiceImpl;
 import com.hims.serviceImpl.ReportServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +21,16 @@ public class PatientController {
     private ReportServiceImpl reportService;
     @Autowired
     private PatientRepository patientRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     public PatientController(PatientServiceImpl patientService, ReportServiceImpl reportService,
-                             PatientRepository patientRepository) {
+                             PatientRepository patientRepository, UserRepository userRepository) {
         this.patientService = patientService;
         this.reportService = reportService;
         this.patientRepository = patientRepository;
+        this.userRepository = userRepository;
     }
 
     @GetMapping("/addPatient")
@@ -51,6 +56,28 @@ public class PatientController {
     @GetMapping("/getPatientInfo")
     public ResponseEntity<?> getPatientInfo(@RequestParam("id") String id) {
         return new ResponseEntity<>(patientRepository.find(Integer.parseInt(id)), HttpStatus.OK);
+    }
+
+    @GetMapping("/permitRelease")
+    public ResponseEntity<?> permitRelease(@RequestParam("id") String id) {
+        patientRepository.updateState(Integer.parseInt(id), "discharge");
+        return new ResponseEntity<>("OK!", HttpStatus.OK);
+    }
+
+//    @GetMapping("/modifyPatientRating")
+//    public ResponseEntity<?> modifyPatientRating(@RequestParam("id") String id,
+//                                                 @RequestParam("rating") String rating) {
+//
+//    }
+
+    @GetMapping("/getMessage")
+    public ResponseEntity<?> getMessage(@RequestParam("id") String id) {
+        User user = userRepository.find(Integer.parseInt(id));
+        switch (user.getU_type()) {
+            case "doctor":
+                return new ResponseEntity<>(patientRepository.getReleasedPatient(), HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Bad!", HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("/modifyPatientState")

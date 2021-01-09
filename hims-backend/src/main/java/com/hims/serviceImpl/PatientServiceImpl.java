@@ -116,4 +116,8 @@ public class PatientServiceImpl implements PatientService {
         patientRepository.updateTArea(id, 0, 1);
         return "No free ward nurse, transfer to quarantine.";
     }
+
+    public List<Patient> getReleased(){
+        return patientRepository.getReleasedPatient();
+    }
 }

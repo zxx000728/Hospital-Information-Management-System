@@ -43,6 +43,15 @@ public class DailyReportRepository {
         }
     }
 
+    public List<DailyReport> findByPIdAndDate(int p_id) {
+        String sql = "select * from daily_report where p_id = ? ORDER BY date DESC";
+        try {
+            return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(DailyReport.class), p_id);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     public void insert(int p_id, String date, float temperature,
                        String symptom, String state, int w_nurse_id) {
         String sql = "insert into daily_report(p_id,date,temperature,symptom,state,w_nurse_id) values (?,?,?,?,?,?)";

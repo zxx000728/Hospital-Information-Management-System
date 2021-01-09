@@ -62,6 +62,17 @@ class Initializer {
     // insert into to_be_transfer(p_id,w_nurse_id,bed_id,data_time) values (6,13,2,NOW());
     private String transfer = "CREATE TRIGGER transfer AFTER INSERT ON to_be_transfer FOR EACH ROW" +
             " BEGIN" +
+
+//            " declare old_w_nurse_id int;"+
+//            " declare old_bed_id int;"+
+//            " declare old_rating varchar(20);"+
+//            " set old_w_nurse_id = (select IFNULL(w_nurse_id,-1) from patient where id = new.p_id);"+
+//            " if (old_w_nurse_id != -1) then"+
+//            " set old_bed_id = (select IFNULL(old_bed_id,-1) from patient where id = new.p_id);"+
+//            " set old_rating = (select old_rating from patient where id = new.p_id);"+
+//            " update bed set state = \"free\" where id = old_bed_id;"+
+//            " END IF;"+
+
             " update patient set w_nurse_id = new.w_nurse_id,bed_id = new.bed_id,state = \"hospitalized\",is_to_be_transferred = 0 where id = new.p_id;" +
             " update bed set state = \"occupied\" where id = new.bed_id;" +
             " END";
@@ -99,12 +110,12 @@ class Initializer {
             " if (p_id != -1) then" +
             " update patient set w_nurse_id = new.w_nurse_id,bed_id = b,state = \"hospitalized\",is_to_be_transferred = 0 where id = p_id;" +
             " update bed set state = \"occupied\" where id = b;" +
-            " else" +
-            " set p_id = (select IFNULL(min(id),-1) from patient where rating = r and is_to_be_transferred = 1 and bed_id != 0);" +
-            " if (p_id != -1) then" +
-            " update patient set w_nurse_id = new.w_nurse_id,bed_id = b,is_to_be_transferred = 0 where id = p_id;" +
-            " update bed set state = \"occupied\" where id = b;" +
-            " END IF;" +
+//            " else" +
+//            " set p_id = (select IFNULL(min(id),-1) from patient where rating = r and is_to_be_transferred = 1 and bed_id != 0);" +
+//            " if (p_id != -1) then" +
+//            " update patient set w_nurse_id = new.w_nurse_id,bed_id = b,is_to_be_transferred = 0 where id = p_id;" +
+//            " update bed set state = \"occupied\" where id = b;" +
+//            " END IF;" +
             " END IF;" +
             " END IF;" +
             " END";

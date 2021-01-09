@@ -40,6 +40,16 @@ public class NATReportRepository {
         return true;
     }
 
+    public List<NatReport> findByPIdAndDate(int p_id) {
+//        String sql = "select * from (select * from nat_report where p_id = ? order by date DESC) order by time";
+        String sql = "select * from nat_report where p_id = ? order by date DESC";
+        try {
+            return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(NatReport.class), p_id);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     public List<NatReport> findByPId(int p_id) {
         String sql = "select * from nat_report where p_id = ?";
         try {
