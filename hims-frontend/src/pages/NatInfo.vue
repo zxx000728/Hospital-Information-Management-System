@@ -4,7 +4,10 @@
     <el-main>
       <el-row type="flex" justify="center">
         <el-col align="left">
-          <el-page-header @back="goBack" :content="'编辑核酸检测单详情'">
+          <el-page-header
+            @back="goBack"
+            :content="'编辑' + this.p_name + '核酸检测单详情'"
+          >
           </el-page-header>
         </el-col>
       </el-row>
@@ -122,15 +125,6 @@ export default {
         },
       },
       loading: false,
-
-      worker: {
-        id: "",
-        name: "新建",
-        age: "",
-        email: "",
-        phone: "",
-        isWNurse: false,
-      },
     };
   },
   created() {
@@ -168,8 +162,6 @@ export default {
             result: this.natInfoForm.result,
             date: this.natInfoForm.date,
             time: this.natInfoForm.time,
-            // TODO
-            rating: "mild",
           },
         })
         .then((resp) => {
