@@ -8,6 +8,8 @@ import BedDataPanel from "@/pages/BedDataPanel";
 import WorkerInfo from "@/pages/WorkerInfo";
 import UserInfo from "@/pages/UserInfo";
 import PatientInfo from "@/pages/PatientInfo";
+import NatDataPanel from "@/pages/NatDataPanel";
+import NatInfo from "@/pages/NatInfo";
 
 Vue.use(Router);
 
@@ -64,6 +66,16 @@ export default new Router({
       path: "/patientInfo/:p_id",
       name: "PatientInfo",
       component: PatientInfo
+    },
+    {
+      path: "/natDataPanel/:p_id&:p_name",
+      name: "NatDataPanel",
+      component: NatDataPanel
+    },
+    {
+      path: "/natInfo/:p_id&:p_name/:r_id",
+      name: "NatInfo",
+      component: NatInfo
     },
     {
       path: "/userInfo",
