@@ -46,7 +46,7 @@ public class ReportServiceImpl implements ReportService {
         return natReportRepository.findByPId(p_id);
     }
 
-    public void fillNATReport(String id, String result, String date, String time, String rating) {
-        natReportRepository.update(Integer.parseInt(id), result, date, time, rating);
+    public void fillNATReport(String id, String result, String date, String time) {
+        natReportRepository.update(Integer.parseInt(id), result, date, time);
     }
 }

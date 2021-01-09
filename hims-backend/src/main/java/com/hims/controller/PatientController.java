@@ -77,9 +77,8 @@ public class PatientController {
     public ResponseEntity<?> fillNATReport(@RequestParam("id") String id,
                                            @RequestParam("result") String result,
                                            @RequestParam("date") String date,
-                                           @RequestParam("time") String time,
-                                           @RequestParam("rating") String rating) {
-        reportService.fillNATReport(id, result, date, time, rating);
+                                           @RequestParam("time") String time) {
+        reportService.fillNATReport(id, result, date, time);
         return new ResponseEntity<>("OK!", HttpStatus.OK);
     }
 }
