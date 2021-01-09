@@ -47,4 +47,9 @@ public class PatientController {
         reportService.addNATReport(Integer.parseInt(p_id));
         return new ResponseEntity<>("OK!", HttpStatus.OK);
     }
+
+    @GetMapping("/getNATReport")
+    public ResponseEntity<?> getNATReport(@RequestParam("p_id") String p_id) {
+        return new ResponseEntity<>(reportService.getNATReport(Integer.parseInt(p_id)), HttpStatus.OK);
+    }
 }
