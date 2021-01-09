@@ -13,10 +13,16 @@ public class NATReportRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+//    public void insert(NatReport natReport) {
+//        String sql = "insert into nat_report(p_id,result,date,time,rating) values (?,?,?,?,?)";
+//        jdbcTemplate.update(sql, natReport.getP_id(), natReport.getResult(),
+//                natReport.getDate(), natReport.getTime(), natReport.getRating());
+//    }
+
     public void insert(NatReport natReport) {
-        String sql = "insert into nat_report(p_id,result,date,time,rating) values (?,?,?,?,?)";
+        String sql = "insert into nat_report(p_id,result,date,time) values (?,?,?,?)";
         jdbcTemplate.update(sql, natReport.getP_id(), natReport.getResult(),
-                natReport.getDate(), natReport.getTime(), natReport.getRating());
+                natReport.getDate(), natReport.getTime());
     }
 
     public void insert(int p_id) {
@@ -44,7 +50,9 @@ public class NATReportRepository {
     }
 
     public void update(int id, String result, String date, String time) {
+//        String temp = "select patient.rating from patient,nat_report where nat_report.id = ? and nat_report.p_id = patient.id";
         String sql = "update nat_report set result=?,date=?,time=? where id=?";
+//        String rating = jdbcTemplate.queryForObject(temp, String.class);
         jdbcTemplate.update(sql, result, date, time, id);
     }
 }

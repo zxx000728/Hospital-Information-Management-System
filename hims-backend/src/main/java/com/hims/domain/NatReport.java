@@ -6,26 +6,41 @@ public class NatReport {
     private String result;
     private String date;
     private String time;
-    private String rating;
+//    private String rating;
 
     public NatReport() {
     }
 
-    public NatReport(int p_id, String result, String date, String time, String rating) {
+//    public NatReport(int p_id, String result, String date, String time, String rating) {
+//        this.p_id = p_id;
+//        this.result = result;
+//        this.date = date;
+//        this.time = time;
+//        this.rating = rating;
+//    }
+
+    public NatReport(int p_id, String result, String date, String time) {
         this.p_id = p_id;
         this.result = result;
         this.date = date;
         this.time = time;
-        this.rating = rating;
     }
 
-    public NatReport(int id, int p_id, String result, String date, String time, String rating) {
+//    public NatReport(int id, int p_id, String result, String date, String time, String rating) {
+//        this.id = id;
+//        this.p_id = p_id;
+//        this.result = result;
+//        this.date = date;
+//        this.time = time;
+//        this.rating = rating;
+//    }
+
+    public NatReport(int id, int p_id, String result, String date, String time) {
         this.id = id;
         this.p_id = p_id;
         this.result = result;
         this.date = date;
         this.time = time;
-        this.rating = rating;
     }
 
     public int getId() {
@@ -68,11 +83,11 @@ public class NatReport {
         this.time = time;
     }
 
-    public String getRating() {
-        return rating;
-    }
-
-    public void setRating(String rating) {
-        this.rating = rating;
-    }
+//    public String getRating() {
+//        return rating;
+//    }
+//
+//    public void setRating(String rating) {
+//        this.rating = rating;
+//    }
 }

@@ -37,7 +37,8 @@ public class PatientController {
         Patient patient = new Patient(name, age, phone,
                 address, rating, Integer.parseInt(ENurseId));
         int id = patientService.insertNewPatient(patient);
-        NatReport natReport = new NatReport(id, NATResult, testDate, testTime, rating);
+//        NatReport natReport = new NatReport(id, NATResult, testDate, testTime, rating);
+        NatReport natReport = new NatReport(id, NATResult, testDate, testTime);
         patientService.insertNewNATReport(natReport);
         return new ResponseEntity<>(patientService.transferPatient(id, rating), HttpStatus.OK);
     }

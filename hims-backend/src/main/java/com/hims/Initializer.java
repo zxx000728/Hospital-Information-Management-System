@@ -109,6 +109,11 @@ class Initializer {
             " END IF;" +
             " END";
 
+//    private String trigger_on_nat = "CREATE TRIGGER trigger_on_nat AFTER INSERT ON nat_report FOR EACH ROW"+
+//            " BEGIN"+
+//            " declare rating varchar(20);"+
+//            " set rating = "
+
     @Bean
     public void init() throws SQLException, ClassNotFoundException {
         Class.forName(driver);
