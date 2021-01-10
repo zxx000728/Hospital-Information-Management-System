@@ -12,6 +12,7 @@ import NatDataPanel from "@/pages/NatDataPanel";
 import NatInfo from "@/pages/NatInfo";
 import DailyReportInfo from "@/pages/DailyReportInfo";
 import DailyReportDataPanel from "@/pages/DailyReportDataPanel";
+import Messages from "@/pages/Messages";
 
 Vue.use(Router);
 
@@ -93,6 +94,11 @@ export default new Router({
       path: "/userInfo",
       name: "UserInfo",
       component: UserInfo
+    },
+    {
+      path: "/messages",
+      name: "Messages",
+      component: Messages
     },
     {
       path: "*",

@@ -111,13 +111,38 @@
             <el-form-item label="地址">
               {{ this.patient.address }}
             </el-form-item>
-            <el-form-item label="病情评级">
+
+            <el-form-item label="病情评级" v-if="!isModifyingRating">
               {{ this.parseRating(this.patient.rating) }}
+              <el-button
+                v-if="isDoctor && patient.state == 'hospitalized'"
+                type="text"
+                @click="handleModifyRating()"
+                >修改</el-button
+              >
             </el-form-item>
+            <el-form-item label="病情评级" v-if="isModifyingRating">
+              <el-select v-model="tempRating">
+                <el-option
+                  v-for="item in ratingOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                >
+                </el-option>
+              </el-select>
+              <el-button type="text" @click="submitModifyRating()"
+                >提交</el-button
+              >
+              <el-button type="text" @click="cancelModifyRating()"
+                >取消</el-button
+              >
+            </el-form-item>
+
             <el-form-item label="生命状态" v-if="!isModifyingState">
               {{ this.parseState(this.patient.state) }}
               <el-button
-                v-if="isDoctor"
+                v-if="isDoctor && patient.state == 'hospitalized'"
                 type="text"
                 @click="handleModifyState()"
                 >修改</el-button
@@ -191,6 +216,8 @@ export default {
 
       isModifyingState: false,
       tempState: "hospitalized",
+      isModifyingRating: false,
+      tempRating: null,
 
       patientInfoForm: {
         ENurseId: "",
@@ -220,20 +247,12 @@ export default {
       ],
       stateOptions: [
         {
-          value: "discharge",
-          label: "康复出院",
-        },
-        {
           value: "hospitalized",
           label: "在院治疗",
         },
         {
           value: "dead",
           label: "病亡",
-        },
-        {
-          value: "null",
-          label: "隔离区",
         },
       ],
       NATResultOptions: [
@@ -341,6 +360,7 @@ export default {
               this.patient.phone = resp.data.phone;
               this.patient.address = resp.data.address;
               this.patient.rating = resp.data.rating;
+              this.tempRating = resp.data.rating;
               this.patient.e_nurse_id = resp.data.e_nurse_id;
               this.patient.w_nurse_id = resp.data.w_nurse_id;
               this.patient.t_area_id = resp.data.t_area_id;
@@ -471,6 +491,33 @@ export default {
     cancelModifyState() {
       this.isModifyingState = false;
       this.tempState = "hospitalized";
+    },
+
+    handleModifyRating() {
+      this.isModifyingRating = true;
+    },
+    submitModifyRating() {
+      this.$axios
+        .get("/modifyPatientRating", {
+          params: {
+            id: this.patient.id.toString(),
+            rating: this.tempRating,
+          },
+        })
+        .then((resp) => {
+          if (resp.status === 200) {
+            this.$message.info("修改成功！");
+            this.reload();
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          this.$message.error("请求错误，请重试");
+        });
+    },
+    cancelModifyRating() {
+      this.isModifyingRating = false;
+      this.tempRating = this.patient.rating;
     },
   },
 };

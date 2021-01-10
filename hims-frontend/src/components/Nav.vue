@@ -8,7 +8,7 @@
     <el-menu-item index="/bedDataPanel" v-if="isHeadNurse"
       >床位面板</el-menu-item
     >
-    <el-menu-item index="4">消息</el-menu-item>
+    <el-menu-item index="/messages">消息</el-menu-item>
     <el-menu-item @click="handleLogout" style="float: right">登出</el-menu-item>
     <el-menu-item index="/userInfo" style="float: right">我的</el-menu-item>
   </el-menu>
