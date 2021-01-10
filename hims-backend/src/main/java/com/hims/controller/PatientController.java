@@ -8,6 +8,7 @@ import com.hims.repository.TreatmentAreaRepository;
 import com.hims.repository.UserRepository;
 import com.hims.serviceImpl.PatientServiceImpl;
 import com.hims.serviceImpl.ReportServiceImpl;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,8 +30,8 @@ public class PatientController {
 
     @Autowired
     public PatientController(PatientServiceImpl patientService, ReportServiceImpl reportService,
-            PatientRepository patientRepository, UserRepository userRepository,
-            TreatmentAreaRepository treatmentAreaRepository) {
+                             PatientRepository patientRepository, UserRepository userRepository,
+                             TreatmentAreaRepository treatmentAreaRepository) {
         this.patientService = patientService;
         this.reportService = reportService;
         this.patientRepository = patientRepository;
@@ -41,10 +42,10 @@ public class PatientController {
     @GetMapping("/addPatient")
     @Transactional
     public ResponseEntity<?> addPatient(@RequestParam("ENurseId") String ENurseId,
-            @RequestParam("NATResult") String NATResult, @RequestParam("address") String address,
-            @RequestParam("age") String age, @RequestParam("name") String name, @RequestParam("phone") String phone,
-            @RequestParam("rating") String rating, @RequestParam("testDate") String testDate,
-            @RequestParam("testTime") String testTime) {
+                                        @RequestParam("NATResult") String NATResult, @RequestParam("address") String address,
+                                        @RequestParam("age") String age, @RequestParam("name") String name, @RequestParam("phone") String phone,
+                                        @RequestParam("rating") String rating, @RequestParam("testDate") String testDate,
+                                        @RequestParam("testTime") String testTime) {
         Patient patient = new Patient(name, age, phone, address, rating, Integer.parseInt(ENurseId));
         int id = patientService.insertNewPatient(patient);
         // NatReport natReport = new NatReport(id, NATResult, testDate, testTime,
@@ -67,8 +68,9 @@ public class PatientController {
 
     @GetMapping("/modifyPatientRating")
     public ResponseEntity<?> modifyPatientRating(@RequestParam("id") String id, @RequestParam("rating") String rating) {
+        String old_rating = patientRepository.getPatientRating(Integer.parseInt(id));
         patientRepository.updateRating(Integer.parseInt(id), rating);
-        return new ResponseEntity<>(patientService.transferPatientToOther(Integer.parseInt(id), rating), HttpStatus.OK);
+        return new ResponseEntity<>(patientService.transferPatientToOther(Integer.parseInt(id), rating, old_rating), HttpStatus.OK);
     }
 
     @GetMapping("/getMessage")
@@ -86,6 +88,7 @@ public class PatientController {
 
     @GetMapping("/transfer")
     public ResponseEntity<?> transfer(@RequestParam("id") String id, @RequestParam("t_area_id") String t_area_id) {
+        String old_rating = patientRepository.getPatientRating(Integer.parseInt(id));
         String rating;
         switch (t_area_id) {
             case "1":
@@ -101,7 +104,7 @@ public class PatientController {
                 rating = "";
                 break;
         }
-        return new ResponseEntity<>(patientService.transferPatientToOther(Integer.parseInt(id), rating), HttpStatus.OK);
+        return new ResponseEntity<>(patientService.transferPatientToOther(Integer.parseInt(id), rating, old_rating), HttpStatus.OK);
     }
 
     @GetMapping("/modifyPatientState")
@@ -122,8 +125,8 @@ public class PatientController {
 
     @GetMapping("/addDailyReport")
     public ResponseEntity<?> addDailyReport(@RequestParam("p_id") String p_id, @RequestParam("date") String date,
-            @RequestParam("temperature") String temperature, @RequestParam("symptom") String symptom,
-            @RequestParam("w_nurse_id") String w_nurse_id) {
+                                            @RequestParam("temperature") String temperature, @RequestParam("symptom") String symptom,
+                                            @RequestParam("w_nurse_id") String w_nurse_id) {
         String state = patientRepository.getPatientState(Integer.parseInt(p_id));
         String message = reportService.addDailyReport(Integer.parseInt(p_id), date, Float.parseFloat(temperature),
                 symptom, state, Integer.parseInt(w_nurse_id));
@@ -146,7 +149,7 @@ public class PatientController {
 
     @GetMapping("/fillNATReport")
     public ResponseEntity<?> fillNATReport(@RequestParam("id") String id, @RequestParam("result") String result,
-            @RequestParam("date") String date, @RequestParam("time") String time) {
+                                           @RequestParam("date") String date, @RequestParam("time") String time) {
         reportService.fillNATReport(id, result, date, time);
         return new ResponseEntity<>("OK!", HttpStatus.OK);
     }

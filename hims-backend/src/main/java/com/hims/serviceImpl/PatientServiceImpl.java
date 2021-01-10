@@ -7,6 +7,7 @@ import com.hims.repository.*;
 import com.hims.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -89,7 +90,8 @@ public class PatientServiceImpl implements PatientService {
         natReportRepository.insert(natReport);
     }
 
-    public String transferPatientToOther(int id, String rating) {
+    @Transactional
+    public String transferPatientToOther(int id, String rating, String old_rating) {
         Patient patient = patientRepository.find(id);
         int t_area_id = treatmentAreaRepository.findByType(rating);
         List<Integer> w_id = wardRepository.findByTreatmentAreaId(t_area_id);
@@ -112,6 +114,11 @@ public class PatientServiceImpl implements PatientService {
                 patientRepository.update(id, w_nurse_id, bed.getId(), "hospitalized", 0, 0);
                 bedRepository.updateState(patient.getBed_id(), "free");
                 bedRepository.updateState(bed.getId(), "occupied");
+                System.out.println("auto transfer");
+                System.out.println("old" + old_rating);
+                System.out.println("old_n_id" + patient.getW_nurse_id());
+                System.out.println("old_b_id" + patient.getBed_id());
+                patientRepository.afterTransfer(patient.getW_nurse_id(), patient.getBed_id(), old_rating);
                 return "OK!";
             }
         }

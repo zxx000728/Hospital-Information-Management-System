@@ -66,6 +66,17 @@ public class PatientRepository {
     }
 
     @Transactional
+    public void afterTransfer(int w_nurse_id, int bed_id, String rating) {
+        String sql = "select IFNULL(min(id),-1) from patient where rating = ? and is_to_be_transferred = 1 and bed_id = 0";
+        int p_id = jdbcTemplate.queryForObject(sql, Integer.class, rating);
+        System.out.println(p_id);
+        if (p_id != -1) {
+            sql = "insert into to_be_transfer(p_id,w_nurse_id,bed_id,data_time) values (?,?,?,NOW())";
+            jdbcTemplate.update(sql, p_id, w_nurse_id, bed_id);
+        }
+    }
+
+    @Transactional
     public void updateState(int id, String state) {
         String sql = "update patient set state = ? where id=?";
         jdbcTemplate.update(sql, state, id);
@@ -178,6 +189,11 @@ public class PatientRepository {
 
     public String getPatientState(int id) {
         String sql = "select state from patient where id=?";
+        return jdbcTemplate.queryForObject(sql, String.class, id);
+    }
+
+    public String getPatientRating(int id) {
+        String sql = "select rating from patient where id=?";
         return jdbcTemplate.queryForObject(sql, String.class, id);
     }
 
